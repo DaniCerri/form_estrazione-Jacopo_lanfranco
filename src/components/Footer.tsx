@@ -12,11 +12,11 @@ export function Footer({ onOpenLegal }: FooterProps) {
       <Separator className="border-border/60" />
 
       {/* Legal navigation links */}
-      <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-xs uppercase tracking-wider font-medium">
+      <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-0 text-xs uppercase tracking-wider font-medium">
         <button
           type="button"
           onClick={() => onOpenLegal("termini")}
-          className="hover:text-foreground transition-colors py-1"
+          className="hover:text-foreground transition-colors py-3 min-h-11 inline-flex items-center"
         >
           Regolamento
         </button>
@@ -24,7 +24,7 @@ export function Footer({ onOpenLegal }: FooterProps) {
         <button
           type="button"
           onClick={() => onOpenLegal("privacy")}
-          className="hover:text-foreground transition-colors py-1"
+          className="hover:text-foreground transition-colors py-3 min-h-11 inline-flex items-center"
         >
           Privacy Policy
         </button>
@@ -32,7 +32,7 @@ export function Footer({ onOpenLegal }: FooterProps) {
         <button
           type="button"
           onClick={() => onOpenLegal("cookie")}
-          className="hover:text-foreground transition-colors py-1"
+          className="hover:text-foreground transition-colors py-3 min-h-11 inline-flex items-center"
         >
           Cookie Policy
         </button>

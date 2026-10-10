@@ -3,9 +3,18 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
-import { Badge } from "@/components/ui/badge"
 import { CircleNotch } from "@phosphor-icons/react"
 import type { GiveawayFormData, FormErrors, TicketData, LegalDocType } from "@/types/giveaway"
+
+const FIELD_ORDER: (keyof GiveawayFormData)[] = [
+  "nome",
+  "cognome",
+  "telefono",
+  "email",
+  "instagram",
+  "accettaTermini",
+  "accettaPrivacy",
+]
 
 interface GiveawayFormProps {
   onOpenLegal: (doc: LegalDocType) => void
@@ -22,6 +31,16 @@ export function GiveawayForm({ onOpenLegal, onSuccess }: GiveawayFormProps) {
   const privacyId = useId()
   const marketingId = useId()
 
+  const fieldIds: Partial<Record<keyof GiveawayFormData, string>> = {
+    nome: nomeId,
+    cognome: cognomeId,
+    telefono: telefonoId,
+    email: emailId,
+    instagram: instagramId,
+    accettaTermini: terminiId,
+    accettaPrivacy: privacyId,
+  }
+
   const [formData, setFormData] = useState<GiveawayFormData>({
     nome: "",
     cognome: "",
@@ -36,7 +55,7 @@ export function GiveawayForm({ onOpenLegal, onSuccess }: GiveawayFormProps) {
   const [errors, setErrors] = useState<FormErrors>({})
   const [isSubmitting, setIsSubmitting] = useState(false)
 
-  const validate = (): boolean => {
+  const validate = (): FormErrors => {
     const newErrors: FormErrors = {}
 
     // Nome
@@ -88,13 +107,26 @@ export function GiveawayForm({ onOpenLegal, onSuccess }: GiveawayFormProps) {
     }
 
     setErrors(newErrors)
-    return Object.keys(newErrors).length === 0
+    return newErrors
   }
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
 
-    if (!validate()) {
+    const newErrors = validate()
+    const firstKey = FIELD_ORDER.find((key) => newErrors[key])
+    if (firstKey) {
+      const found = document.getElementById(fieldIds[firstKey]!)
+      // Base UI Checkbox puts the id on a hidden input; the focusable element is the role="checkbox" root
+      const el =
+        found instanceof HTMLInputElement && found.type === "checkbox"
+          ? (found.parentElement?.querySelector<HTMLElement>('[role="checkbox"]') ?? found)
+          : found
+      if (el) {
+        el.focus({ preventScroll: true })
+        const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches
+        el.scrollIntoView({ block: "center", behavior: reduced ? "auto" : "smooth" })
+      }
       return
     }
 
@@ -128,7 +160,7 @@ export function GiveawayForm({ onOpenLegal, onSuccess }: GiveawayFormProps) {
     }, 900)
   }
 
-  const handleInputChange = (field: keyof GiveawayFormData, value: any) => {
+  const handleInputChange = (field: keyof GiveawayFormData, value: string | boolean) => {
     setFormData((prev) => ({ ...prev, [field]: value }))
     if (errors[field]) {
       setErrors((prev) => ({ ...prev, [field]: undefined }))
@@ -137,19 +169,19 @@ export function GiveawayForm({ onOpenLegal, onSuccess }: GiveawayFormProps) {
 
   return (
     <section className="w-full border-b border-border/60 bg-card">
-      <div className="px-5 py-5 border-b border-border/60">
+      <div className="px-5 pt-6 pb-1">
         <span className="text-xs uppercase tracking-[0.25em] text-muted-foreground font-semibold block">
-          Partecipazione Live
+          Serata del 21/10
         </span>
-        <h2 className="font-heading font-serif text-lg font-medium text-foreground tracking-tight mt-0.5">
-          Modulo di Iscrizione
+        <h2 className="font-heading text-xl font-normal text-foreground tracking-tight mt-1">
+          Iscriviti all'estrazione
         </h2>
-        <p className="text-sm text-muted-foreground font-sans mt-0.5">
-          Iscriviti adesso durante la serata del 21/10 per concorrere all'estrazione finale.
+        <p className="text-sm text-muted-foreground font-sans mt-1">
+          Pochi secondi. Il vincitore viene estratto a fine serata.
         </p>
       </div>
 
-      <div className="px-5 py-5">
+      <div className="px-5 pt-4 pb-6">
         <form onSubmit={handleSubmit} className="space-y-4.5" noValidate>
           {/* Nome e Cognome */}
           <div className="grid grid-cols-2 gap-3">
@@ -164,13 +196,13 @@ export function GiveawayForm({ onOpenLegal, onSuccess }: GiveawayFormProps) {
                 value={formData.nome}
                 onChange={(e) => handleInputChange("nome", e.target.value)}
                 disabled={isSubmitting}
-                className={`h-11 text-sm rounded-none border-border ${
-                  errors.nome ? "border-destructive" : ""
-                }`}
+                className="h-12 text-base md:text-base rounded-none border-border"
+                aria-invalid={!!errors.nome}
+                aria-describedby={errors.nome ? `${nomeId}-error` : undefined}
                 autoComplete="given-name"
               />
               {errors.nome && (
-                <p className="text-xs text-destructive mt-0.5">{errors.nome}</p>
+                <p id={`${nomeId}-error`} className="text-xs text-destructive mt-0.5">{errors.nome}</p>
               )}
             </div>
 
@@ -185,13 +217,13 @@ export function GiveawayForm({ onOpenLegal, onSuccess }: GiveawayFormProps) {
                 value={formData.cognome}
                 onChange={(e) => handleInputChange("cognome", e.target.value)}
                 disabled={isSubmitting}
-                className={`h-11 text-sm rounded-none border-border ${
-                  errors.cognome ? "border-destructive" : ""
-                }`}
+                className="h-12 text-base md:text-base rounded-none border-border"
+                aria-invalid={!!errors.cognome}
+                aria-describedby={errors.cognome ? `${cognomeId}-error` : undefined}
                 autoComplete="family-name"
               />
               {errors.cognome && (
-                <p className="text-xs text-destructive mt-0.5">{errors.cognome}</p>
+                <p id={`${cognomeId}-error`} className="text-xs text-destructive mt-0.5">{errors.cognome}</p>
               )}
             </div>
           </div>
@@ -211,13 +243,13 @@ export function GiveawayForm({ onOpenLegal, onSuccess }: GiveawayFormProps) {
               value={formData.telefono}
               onChange={(e) => handleInputChange("telefono", e.target.value)}
               disabled={isSubmitting}
-              className={`h-11 text-sm rounded-none border-border ${
-                errors.telefono ? "border-destructive" : ""
-              }`}
+              className="h-12 text-base md:text-base rounded-none border-border"
+                aria-invalid={!!errors.telefono}
+                aria-describedby={errors.telefono ? `${telefonoId}-error` : undefined}
               autoComplete="tel"
             />
             {errors.telefono && (
-              <p className="text-xs text-destructive mt-0.5">{errors.telefono}</p>
+              <p id={`${telefonoId}-error`} className="text-xs text-destructive mt-0.5">{errors.telefono}</p>
             )}
           </div>
 
@@ -233,28 +265,26 @@ export function GiveawayForm({ onOpenLegal, onSuccess }: GiveawayFormProps) {
               value={formData.email}
               onChange={(e) => handleInputChange("email", e.target.value)}
               disabled={isSubmitting}
-              className={`h-11 text-sm rounded-none border-border ${
-                errors.email ? "border-destructive" : ""
-              }`}
+              className="h-12 text-base md:text-base rounded-none border-border"
+                aria-invalid={!!errors.email}
+                aria-describedby={errors.email ? `${emailId}-error` : undefined}
               autoComplete="email"
+              autoCapitalize="none"
+              spellCheck={false}
             />
             {errors.email && (
-              <p className="text-xs text-destructive mt-0.5">{errors.email}</p>
+              <p id={`${emailId}-error`} className="text-xs text-destructive mt-0.5">{errors.email}</p>
             )}
           </div>
 
           {/* Instagram (Opzionale) */}
           <div className="space-y-1.5">
-            <div className="flex items-center justify-between">
-              <Label htmlFor={instagramId} className="text-xs uppercase tracking-wider font-semibold text-muted-foreground">
-                Nickname Instagram
-              </Label>
-              <Badge variant="outline" className="text-[10px] uppercase tracking-wider font-medium px-2 py-0.5 border-border">
-                Opzionale
-              </Badge>
-            </div>
+            <Label htmlFor={instagramId} className="text-xs uppercase tracking-wider font-semibold text-muted-foreground">
+              Nickname Instagram{" "}
+              <span className="lowercase tracking-normal font-normal">(facoltativo)</span>
+            </Label>
             <div className="relative flex items-center">
-              <span className="absolute left-3 text-muted-foreground text-sm select-none font-mono">
+              <span className="absolute left-3 text-muted-foreground text-base select-none font-mono">
                 @
               </span>
               <Input
@@ -264,15 +294,20 @@ export function GiveawayForm({ onOpenLegal, onSuccess }: GiveawayFormProps) {
                 value={formData.instagram.replace(/^@/, "")}
                 onChange={(e) => handleInputChange("instagram", e.target.value)}
                 disabled={isSubmitting}
-                className="h-11 text-sm rounded-none border-border pl-7"
+                className="h-12 text-base md:text-base rounded-none border-border pl-7"
                 autoCapitalize="none"
+                autoCorrect="off"
+                autoComplete="off"
+                spellCheck={false}
+                aria-invalid={!!errors.instagram}
+                aria-describedby={errors.instagram ? `${instagramId}-error` : undefined}
               />
             </div>
             <p className="text-xs text-muted-foreground">
               Per la menzione social e la proclamazione in sala.
             </p>
             {errors.instagram && (
-              <p className="text-xs text-destructive mt-0.5">{errors.instagram}</p>
+              <p id={`${instagramId}-error`} className="text-xs text-destructive mt-0.5">{errors.instagram}</p>
             )}
           </div>
 
@@ -288,6 +323,8 @@ export function GiveawayForm({ onOpenLegal, onSuccess }: GiveawayFormProps) {
                 <Checkbox
                   id={terminiId}
                   checked={formData.accettaTermini}
+                  aria-invalid={!!errors.accettaTermini}
+                  aria-describedby={errors.accettaTermini ? `${terminiId}-error` : undefined}
                   onCheckedChange={(checked) => handleInputChange("accettaTermini", checked === true)}
                   disabled={isSubmitting}
                   className="mt-1 size-4.5"
@@ -305,7 +342,7 @@ export function GiveawayForm({ onOpenLegal, onSuccess }: GiveawayFormProps) {
                 </Label>
               </div>
               {errors.accettaTermini && (
-                <p className="text-xs text-destructive pl-7">{errors.accettaTermini}</p>
+                <p id={`${terminiId}-error`} className="text-xs text-destructive pl-7">{errors.accettaTermini}</p>
               )}
             </div>
 
@@ -315,6 +352,8 @@ export function GiveawayForm({ onOpenLegal, onSuccess }: GiveawayFormProps) {
                 <Checkbox
                   id={privacyId}
                   checked={formData.accettaPrivacy}
+                  aria-invalid={!!errors.accettaPrivacy}
+                  aria-describedby={errors.accettaPrivacy ? `${privacyId}-error` : undefined}
                   onCheckedChange={(checked) => handleInputChange("accettaPrivacy", checked === true)}
                   disabled={isSubmitting}
                   className="mt-1 size-4.5"
@@ -332,7 +371,7 @@ export function GiveawayForm({ onOpenLegal, onSuccess }: GiveawayFormProps) {
                 </Label>
               </div>
               {errors.accettaPrivacy && (
-                <p className="text-xs text-destructive pl-7">{errors.accettaPrivacy}</p>
+                <p id={`${privacyId}-error`} className="text-xs text-destructive pl-7">{errors.accettaPrivacy}</p>
               )}
             </div>
 

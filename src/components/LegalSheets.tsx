@@ -23,7 +23,7 @@ export function LegalSheets({
     <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetContent
         side="bottom"
-        className="max-h-[85vh] h-[85vh] rounded-none p-0 flex flex-col bg-background border-t border-border shadow-2xl"
+        className="max-h-[85dvh] h-[85dvh] rounded-none p-0 flex flex-col bg-background border-t border-border shadow-2xl"
       >
         {/* Top Handle */}
         <div className="w-full flex justify-center pt-3 pb-1">
@@ -64,7 +64,7 @@ export function LegalSheets({
             <span className="text-xs uppercase tracking-[0.25em] text-muted-foreground font-medium block">
               Documentazione Ufficiale
             </span>
-            <SheetTitle className="font-heading font-serif text-lg font-medium text-foreground tracking-tight mt-0.5">
+            <SheetTitle className="font-heading text-lg font-normal text-foreground tracking-tight mt-0.5">
               {currentDoc.title}
             </SheetTitle>
             <SheetDescription className="text-xs text-muted-foreground font-mono mt-0.5">
@@ -81,7 +81,7 @@ export function LegalSheets({
           <div className="space-y-4.5">
             {currentDoc.sections.map((section, idx) => (
               <div key={idx} className="space-y-1.5">
-                <h4 className="font-heading font-serif text-sm font-semibold text-foreground">
+                <h4 className="font-heading text-sm font-bold text-foreground">
                   {section.title}
                 </h4>
                 <div className="space-y-1.5 text-muted-foreground text-sm">

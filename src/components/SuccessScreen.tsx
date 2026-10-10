@@ -1,7 +1,6 @@
 import { useState } from "react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
 import {
   Copy,
   CheckCircle,
@@ -57,7 +56,7 @@ export function SuccessScreen({ ticket, onReset }: SuccessScreenProps) {
         <div className="text-xs uppercase tracking-[0.3em] text-muted-foreground font-semibold">
           Registrazione Confermata
         </div>
-        <h2 className="font-heading font-serif text-xl font-medium text-foreground tracking-tight">
+        <h2 className="font-heading text-xl font-normal text-foreground tracking-tight">
           Il tuo Biglietto per la Cena
         </h2>
         <p className="text-sm text-muted-foreground max-w-xs mx-auto leading-relaxed">
@@ -73,16 +72,10 @@ export function SuccessScreen({ ticket, onReset }: SuccessScreenProps) {
             <span className="text-[10px] uppercase tracking-[0.25em] font-medium opacity-80 block">
               Chef Battle • 21/10/2026
             </span>
-            <span className="font-heading font-serif text-sm font-semibold tracking-wide">
+            <span className="font-heading text-sm font-bold tracking-wide">
               Biglietto Ufficiale
             </span>
           </div>
-          <Badge
-            variant="outline"
-            className="rounded-none text-[9px] uppercase tracking-widest border-background/40 text-background px-2 py-0.5"
-          >
-            Sorteggio Live
-          </Badge>
         </div>
 
         <CardContent className="p-5 space-y-5">
@@ -144,7 +137,7 @@ export function SuccessScreen({ ticket, onReset }: SuccessScreenProps) {
 
       {/* Warning Box */}
       <div className="p-4 border border-border bg-muted/40 text-sm space-y-1.5">
-        <div className="font-heading font-serif text-sm font-semibold text-foreground">
+        <div className="font-heading text-sm font-bold text-foreground">
           Importante per la Proclamazione:
         </div>
         <p className="text-sm text-muted-foreground leading-relaxed">
