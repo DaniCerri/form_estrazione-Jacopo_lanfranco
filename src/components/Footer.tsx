@@ -46,6 +46,28 @@ export function Footer({ onOpenLegal }: FooterProps) {
           Iniziativa promozionale limitata alla serata del {GIVEAWAY_CONFIG.eventDate}. Partecipazione riservata ai maggiori di 18 anni.
         </p>
       </div>
+
+      <div className="mt-8 pt-6 border-t border-border/60 flex flex-col items-center gap-2.5">
+        <span className="text-[11px] uppercase tracking-[0.25em] text-muted-foreground/80">
+          Made by
+        </span>
+        <a
+          href="https://www.projectcherry.it/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center min-h-11 px-2 opacity-90 hover:opacity-100 transition-opacity"
+        >
+          <img
+            src="/immagini/logo.webp"
+            alt="Project Cherry"
+            width={463}
+            height={64}
+            className="h-6 w-auto"
+            loading="lazy"
+            decoding="async"
+          />
+        </a>
+      </div>
     </footer>
   )
 }
