@@ -32,3 +32,9 @@ L'estrazione dal vivo del vincitore avverrà al termine della serata.
 - **Consenso Regolamento Concorso** (obbligatorio, consultabile via Sheet drawer)
 - **Consenso Privacy GDPR** (obbligatorio, consultabile via Sheet drawer)
 - **Consenso Eventi Futuri** (facoltativo)
+
+## Deploy su Railway (Docker)
+- `Dockerfile`: Multi-stage build (Node 22 Alpine per build statico + Nginx Alpine per il serving).
+- `nginx.conf.template`: Supporta la variabile `$PORT` iniettata dinamicamente da Railway tramite `envsubst`.
+- `.dockerignore`: Esclude `node_modules`, `dist` e file non necessari per build veloci.
+- Routing SPA con fallback a `index.html` e compressione gzip attiva.
