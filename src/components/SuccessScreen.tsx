@@ -1,7 +1,8 @@
-import { CheckCircle, ArrowCounterClockwise } from "@phosphor-icons/react"
+import { ArrowCounterClockwise } from "@phosphor-icons/react"
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import type { RegistrationData } from "@/types/giveaway"
+import { GIVEAWAY_CONFIG } from "@/data/giveawayConfig"
 
 interface SuccessScreenProps {
   registration: RegistrationData
@@ -12,20 +13,17 @@ export function SuccessScreen({ registration, onReset }: SuccessScreenProps) {
   return (
     <div className="w-full px-5 py-6 space-y-6 animate-in fade-in duration-300">
       {/* Editorial Header - Conferma */}
-      <div className="text-center space-y-2.5 pt-2 border-b border-border/60 pb-6">
-        <div className="inline-flex p-2.5 rounded-none bg-foreground text-background mb-1">
-          <CheckCircle className="size-7" weight="bold" />
-        </div>
-        <div className="text-xs uppercase tracking-[0.3em] text-muted-foreground font-semibold">
-          Registrazione Confermata
-        </div>
-        <h2 className="font-heading text-2xl font-normal text-foreground tracking-tight">
-          Sei in Gara per la Cena
+      <header className="pb-8 border-b border-border/60">
+        <h2 className="mt-4 font-heading text-5xl font-light leading-[1.02] tracking-tight text-foreground break-words">
+          Sei in gara,
+          <br />
+          <em className="italic">{registration.nome}</em>.
         </h2>
-        <p className="text-sm text-muted-foreground max-w-xs mx-auto leading-relaxed font-sans">
-          La tua partecipazione all'estrazione esclusiva con lo Chef Jacopo Lanfranco è confermata.
+
+        <p className="mt-6 max-w-[34ch] text-base leading-relaxed text-foreground/80 font-sans">
+          Il tuo nome è nell'urna per la cena privata con lo Chef {GIVEAWAY_CONFIG.chefName}.
         </p>
-      </div>
+      </header>
 
       {/* Riepilogo Dati */}
       <Card className="border border-border/80 bg-card rounded-none shadow-none">
