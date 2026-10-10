@@ -1,14 +1,14 @@
 import { CheckCircle, ArrowCounterClockwise } from "@phosphor-icons/react"
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import type { TicketData } from "@/types/giveaway"
+import type { RegistrationData } from "@/types/giveaway"
 
 interface SuccessScreenProps {
-  ticket: TicketData
+  registration: RegistrationData
   onReset: () => void
 }
 
-export function SuccessScreen({ ticket, onReset }: SuccessScreenProps) {
+export function SuccessScreen({ registration, onReset }: SuccessScreenProps) {
   return (
     <div className="w-full px-5 py-6 space-y-6 animate-in fade-in duration-300">
       {/* Editorial Header - Conferma */}
@@ -45,30 +45,30 @@ export function SuccessScreen({ ticket, onReset }: SuccessScreenProps) {
             <div className="flex items-center justify-between py-2.5 first:pt-0">
               <dt className="text-muted-foreground uppercase text-xs tracking-wider">Partecipante</dt>
               <dd className="font-medium text-foreground text-right">
-                {ticket.nome} {ticket.cognome}
+                {registration.nome} {registration.cognome}
               </dd>
             </div>
 
             <div className="flex items-center justify-between py-2.5">
               <dt className="text-muted-foreground uppercase text-xs tracking-wider">Telefono</dt>
-              <dd className="font-mono text-foreground font-medium text-right">{ticket.telefono}</dd>
+              <dd className="font-mono text-foreground font-medium text-right">{registration.telefono}</dd>
             </div>
 
             <div className="flex items-center justify-between py-2.5">
               <dt className="text-muted-foreground uppercase text-xs tracking-wider">Email</dt>
-              <dd className="text-foreground truncate max-w-[200px] text-right">{ticket.email}</dd>
+              <dd className="text-foreground truncate max-w-[200px] text-right">{registration.email}</dd>
             </div>
 
-            {ticket.instagram && (
+            {registration.instagram && (
               <div className="flex items-center justify-between py-2.5">
                 <dt className="text-muted-foreground uppercase text-xs tracking-wider">Instagram</dt>
-                <dd className="font-mono text-foreground font-medium text-right">{ticket.instagram}</dd>
+                <dd className="font-mono text-foreground font-medium text-right">{registration.instagram}</dd>
               </div>
             )}
 
             <div className="flex items-center justify-between py-2.5 last:pb-0">
               <dt className="text-muted-foreground uppercase text-xs tracking-wider">Data Iscrizione</dt>
-              <dd className="font-mono text-muted-foreground text-xs text-right">{ticket.createdAt}</dd>
+              <dd className="font-mono text-muted-foreground text-xs text-right">{registration.createdAt}</dd>
             </div>
           </dl>
         </CardContent>

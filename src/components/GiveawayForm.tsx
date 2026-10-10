@@ -4,7 +4,7 @@ import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import { CircleNotch } from "@phosphor-icons/react"
-import type { GiveawayFormData, FormErrors, TicketData, LegalDocType } from "@/types/giveaway"
+import type { GiveawayFormData, FormErrors, RegistrationData, LegalDocType } from "@/types/giveaway"
 
 const FIELD_ORDER: (keyof GiveawayFormData)[] = [
   "nome",
@@ -18,7 +18,7 @@ const FIELD_ORDER: (keyof GiveawayFormData)[] = [
 
 interface GiveawayFormProps {
   onOpenLegal: (doc: LegalDocType) => void
-  onSuccess: (ticket: TicketData) => void
+  onSuccess: (registration: RegistrationData) => void
 }
 
 export function GiveawayForm({ onOpenLegal, onSuccess }: GiveawayFormProps) {
@@ -133,11 +133,7 @@ export function GiveawayForm({ onOpenLegal, onSuccess }: GiveawayFormProps) {
     setIsSubmitting(true)
 
     setTimeout(() => {
-      const randomSuffix = Math.floor(1000 + Math.random() * 9000)
-      const ticketCode = `BATTLE-2110-${randomSuffix}`
-
-      const ticketResult: TicketData = {
-        ticketCode,
+      const registration: RegistrationData = {
         nome: formData.nome.trim(),
         cognome: formData.cognome.trim(),
         telefono: formData.telefono.trim(),
@@ -156,7 +152,7 @@ export function GiveawayForm({ onOpenLegal, onSuccess }: GiveawayFormProps) {
       }
 
       setIsSubmitting(false)
-      onSuccess(ticketResult)
+      onSuccess(registration)
     }, 900)
   }
 

@@ -7,10 +7,10 @@ import { FaqSection } from "@/components/FaqSection"
 import { Footer } from "@/components/Footer"
 import { SuccessScreen } from "@/components/SuccessScreen"
 import { LegalSheets } from "@/components/LegalSheets"
-import type { TicketData, LegalDocType } from "@/types/giveaway"
+import type { RegistrationData, LegalDocType } from "@/types/giveaway"
 
 export function App() {
-  const [ticket, setTicket] = useState<TicketData | null>(null)
+  const [registration, setRegistration] = useState<RegistrationData | null>(null)
   const [legalOpen, setLegalOpen] = useState(false)
   const [activeLegalDoc, setActiveLegalDoc] = useState<LegalDocType>("termini")
 
@@ -24,13 +24,13 @@ export function App() {
     setLegalOpen(true)
   }
 
-  const handleSuccess = (createdTicket: TicketData) => {
-    setTicket(createdTicket)
+  const handleSuccess = (data: RegistrationData) => {
+    setRegistration(data)
     scrollToTop()
   }
 
   const handleReset = () => {
-    setTicket(null)
+    setRegistration(null)
     scrollToTop()
   }
 
@@ -40,8 +40,8 @@ export function App() {
         <Header />
 
         <div className="flex-1 w-full flex flex-col">
-          {ticket ? (
-            <SuccessScreen ticket={ticket} onReset={handleReset} />
+          {registration ? (
+            <SuccessScreen registration={registration} onReset={handleReset} />
           ) : (
             <>
               <GiveawayForm

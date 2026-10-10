@@ -29,14 +29,14 @@ export const LEGAL_TEXTS: Record<"privacy" | "termini" | "cookie", LegalDocument
           "Raccogliamo unicamente i dati necessari per la gestione della partecipazione all'estrazione:",
           "• Nome e Cognome del partecipante.",
           "• Recapito telefonico (necessario per il contatto immediato a fine serata).",
-          "• Indirizzo email (per la trasmissione del codice biglietto e conferma).",
+          "• Indirizzo email (per la conferma dell'iscrizione e l'eventuale notifica di vincita).",
           "• Nickname Instagram (opzionale, per eventuale menzione social durante la proclamazione).",
         ],
       },
       {
         title: "3. Finalità e Base Giuridica del Trattamento",
         content: [
-          "• Gestione dell'estrazione: Assegnazione del codice biglietto univoco, sorteggio casuale a fine serata e proclamazione del vincitore della cena per due. Base giuridica: adempimento del regolamento dell'iniziativa.",
+          "• Gestione dell'estrazione: registrazione dei partecipanti, sorteggio casuale a fine serata e proclamazione del vincitore della cena per due. Base giuridica: adempimento del regolamento dell'iniziativa.",
           "• Comunicazioni facoltative (previo consenso): Invio saltuario di inviti o comunicazioni su futuri eventi gastronomici ed esperienze dello Chef. Base giuridica: consenso esplicito facoltativo.",
         ],
       },
@@ -64,7 +64,7 @@ export const LEGAL_TEXTS: Record<"privacy" | "termini" | "cookie", LegalDocument
         title: "1. Requisiti e Limiti di Partecipazione",
         content: [
           "La partecipazione è gratuita ed è riservata ai partecipanti maggiorenni presenti alla serata Chef Battle del 21 Ottobre 2026.",
-          "Ciascun partecipante ha diritto a una sola registrazione e a un unico codice biglietto. Tentativi di iscrizione multipla con lo stesso numero o indirizzo comporteranno l'annullamento automatico dei biglietti eccedenti.",
+          "Ciascun partecipante ha diritto a una sola registrazione. Tentativi di iscrizione multipla con lo stesso numero o indirizzo comporteranno l'annullamento automatico delle iscrizioni eccedenti.",
         ],
       },
       {
@@ -78,9 +78,9 @@ export const LEGAL_TEXTS: Record<"privacy" | "termini" | "cookie", LegalDocument
       {
         title: "3. Modalità di Estrazione e Proclamazione",
         content: [
-          "L'estrazione del codice vincente avverrà al termine della serata Chef Battle il 21/10/2026 tramite sorteggio casuale certificato.",
+          "L'estrazione del vincitore avverrà al termine della serata Chef Battle il 21/10/2026 tramite sorteggio casuale certificato.",
           "Il vincitore sarà proclamato al termine dell'evento e contattato immediatamente tramite chiamata vocale al recapito telefonico inserito nel modulo.",
-          "In caso di irreperibilità del vincitore o mancata risposta entro i tempi annunciati durante la serata, si procederà al sorteggio di un biglietto di riserva.",
+          "In caso di irreperibilità del vincitore o mancata risposta entro i tempi annunciati durante la serata, si procederà al sorteggio di un partecipante di riserva.",
         ],
       },
     ],

@@ -9,7 +9,7 @@ export function Header() {
           alt="Chef Battle - Jacopo Lanfranco"
           width={980}
           height={593}
-          className="w-full h-[26rem] sm:h-[28rem] object-cover object-center grayscale contrast-115 brightness-90"
+          className="w-full h-[26rem] sm:h-[28rem] object-cover object-right grayscale contrast-115 brightness-90"
           loading="eager"
           fetchPriority="high"
           decoding="async"

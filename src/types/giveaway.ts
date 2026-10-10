@@ -11,8 +11,7 @@ export interface GiveawayFormData {
 
 export type FormErrors = Partial<Record<keyof GiveawayFormData, string>>
 
-export interface TicketData {
-  ticketCode: string
+export interface RegistrationData {
   nome: string
   cognome: string
   telefono: string
