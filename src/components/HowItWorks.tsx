@@ -7,8 +7,8 @@ export function HowItWorks() {
     },
     {
       num: "02",
-      title: "Ricevi il codice",
-      desc: "Appena confermata l'iscrizione vedi a schermo il tuo codice. Conservalo fino all'estrazione.",
+      title: "Conferma iscrizione",
+      desc: "Appena inviata la registrazione visualizzi la conferma con il riepilogo dei tuoi dati.",
     },
     {
       num: "03",

@@ -27,7 +27,7 @@ L'estrazione dal vivo del vincitore avverrà al termine della serata.
 - **Nome** (obbligatorio)
 - **Cognome** (obbligatorio)
 - **Telefono** (obbligatorio, utilizzato per la chiamata del vincitore a fine serata)
-- **Email** (obbligatorio, per recapito codice biglietto)
+- **Email** (obbligatorio, per conferma iscrizione e comunicazioni)
 - **Nickname Instagram** (facoltativo, per menzione live in sala)
 - **Consenso Regolamento Concorso** (obbligatorio, consultabile via Sheet drawer)
 - **Consenso Privacy GDPR** (obbligatorio, consultabile via Sheet drawer)

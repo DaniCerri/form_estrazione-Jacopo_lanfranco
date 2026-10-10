@@ -1,14 +1,7 @@
-import { useState } from "react"
-import { Card, CardContent } from "@/components/ui/card"
+import { CheckCircle, ArrowCounterClockwise } from "@phosphor-icons/react"
+import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import {
-  Copy,
-  CheckCircle,
-  ShareNetwork,
-  ArrowCounterClockwise,
-} from "@phosphor-icons/react"
 import type { TicketData } from "@/types/giveaway"
-import { GIVEAWAY_CONFIG } from "@/data/giveawayConfig"
 
 interface SuccessScreenProps {
   ticket: TicketData
@@ -16,157 +9,92 @@ interface SuccessScreenProps {
 }
 
 export function SuccessScreen({ ticket, onReset }: SuccessScreenProps) {
-  const [copied, setCopied] = useState(false)
-
-  const handleCopyCode = async () => {
-    try {
-      await navigator.clipboard.writeText(ticket.ticketCode)
-      setCopied(true)
-      setTimeout(() => setCopied(false), 2500)
-    } catch {
-      setCopied(true)
-      setTimeout(() => setCopied(false), 2500)
-    }
-  }
-
-  const handleShare = async () => {
-    const text = `Sono iscritto all'estrazione per la cena con Chef ${GIVEAWAY_CONFIG.chefName} alla ${GIVEAWAY_CONFIG.eventName} (${GIVEAWAY_CONFIG.eventDate}). Biglietto: ${ticket.ticketCode}`
-    if (navigator.share) {
-      try {
-        await navigator.share({
-          title: "Chef Battle 2026",
-          text,
-          url: window.location.href,
-        })
-      } catch {
-        // cancelled
-      }
-    } else {
-      handleCopyCode()
-    }
-  }
-
   return (
-    <div className="w-full px-5 py-6 space-y-5 animate-in fade-in duration-300">
-      {/* Editorial Header */}
-      <div className="text-center space-y-2 pt-2 border-b border-border/60 pb-4">
+    <div className="w-full px-5 py-6 space-y-6 animate-in fade-in duration-300">
+      {/* Editorial Header - Conferma */}
+      <div className="text-center space-y-2.5 pt-2 border-b border-border/60 pb-6">
         <div className="inline-flex p-2.5 rounded-none bg-foreground text-background mb-1">
           <CheckCircle className="size-7" weight="bold" />
         </div>
         <div className="text-xs uppercase tracking-[0.3em] text-muted-foreground font-semibold">
           Registrazione Confermata
         </div>
-        <h2 className="font-heading text-xl font-normal text-foreground tracking-tight">
-          Il tuo Biglietto per la Cena
+        <h2 className="font-heading text-2xl font-normal text-foreground tracking-tight">
+          Sei in Gara per la Cena
         </h2>
-        <p className="text-sm text-muted-foreground max-w-xs mx-auto leading-relaxed">
-          Conserva questo codice. L'estrazione avverrà questa sera al termine della Chef Battle.
+        <p className="text-sm text-muted-foreground max-w-xs mx-auto leading-relaxed font-sans">
+          La tua partecipazione all'estrazione esclusiva con lo Chef Jacopo Lanfranco è confermata.
         </p>
       </div>
 
-      {/* Editorial Monochrome Ticket */}
-      <Card className="border border-border bg-card rounded-none shadow-none overflow-hidden">
-        {/* Ticket Header */}
-        <div className="bg-foreground text-background p-4 flex items-center justify-between">
-          <div>
-            <span className="text-[10px] uppercase tracking-[0.25em] font-medium opacity-80 block">
-              Chef Battle • 21/10/2026
+      {/* Riepilogo Dati */}
+      <Card className="border border-border/80 bg-card rounded-none shadow-none">
+        <CardHeader className="p-4 border-b border-border/60 bg-muted/20">
+          <div className="flex items-center justify-between">
+            <span className="text-xs uppercase tracking-[0.25em] font-semibold text-foreground">
+              Riepilogo Dati
             </span>
-            <span className="font-heading text-sm font-bold tracking-wide">
-              Biglietto Ufficiale
+            <span className="text-[11px] uppercase tracking-wider text-muted-foreground">
+              Chef Battle 2026
             </span>
           </div>
-        </div>
+        </CardHeader>
 
-        <CardContent className="p-5 space-y-5">
-          {/* Big Ticket Number */}
-          <div className="text-center p-4 border border-border bg-muted/30">
-            <span className="text-xs uppercase tracking-[0.25em] text-muted-foreground font-medium block">
-              Numero Identificativo
-            </span>
-            <div className="font-mono text-2xl font-bold tracking-widest text-foreground py-1.5">
-              {ticket.ticketCode}
-            </div>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={handleCopyCode}
-              className="mt-1 h-8 text-xs uppercase tracking-wider rounded-none px-4 border-border hover:bg-foreground hover:text-background transition-colors"
-            >
-              <Copy className="size-3.5 mr-1.5" />
-              {copied ? "Copiato ✓" : "Copia Codice"}
-            </Button>
-          </div>
-
-          {/* Dotted division */}
-          <div className="border-t border-dashed border-border" />
-
-          {/* Ticket Information */}
-          <div className="space-y-2.5 text-sm font-sans">
-            <div className="flex items-center justify-between py-1.5 border-b border-border/40">
-              <span className="text-muted-foreground uppercase text-xs tracking-wider">Partecipante</span>
-              <span className="font-medium text-foreground">
+        <CardContent className="p-5">
+          <dl className="divide-y divide-border/40 text-sm font-sans">
+            <div className="flex items-center justify-between py-2.5 first:pt-0">
+              <dt className="text-muted-foreground uppercase text-xs tracking-wider">Partecipante</dt>
+              <dd className="font-medium text-foreground text-right">
                 {ticket.nome} {ticket.cognome}
-              </span>
+              </dd>
             </div>
 
-            <div className="flex items-center justify-between py-1.5 border-b border-border/40">
-              <span className="text-muted-foreground uppercase text-xs tracking-wider">Telefono</span>
-              <span className="font-mono text-foreground font-medium">{ticket.telefono}</span>
+            <div className="flex items-center justify-between py-2.5">
+              <dt className="text-muted-foreground uppercase text-xs tracking-wider">Telefono</dt>
+              <dd className="font-mono text-foreground font-medium text-right">{ticket.telefono}</dd>
             </div>
 
-            <div className="flex items-center justify-between py-1.5 border-b border-border/40">
-              <span className="text-muted-foreground uppercase text-xs tracking-wider">Email</span>
-              <span className="text-foreground truncate max-w-[200px]">{ticket.email}</span>
+            <div className="flex items-center justify-between py-2.5">
+              <dt className="text-muted-foreground uppercase text-xs tracking-wider">Email</dt>
+              <dd className="text-foreground truncate max-w-[200px] text-right">{ticket.email}</dd>
             </div>
 
             {ticket.instagram && (
-              <div className="flex items-center justify-between py-1.5 border-b border-border/40">
-                <span className="text-muted-foreground uppercase text-xs tracking-wider">Instagram</span>
-                <span className="font-mono text-foreground font-medium">{ticket.instagram}</span>
+              <div className="flex items-center justify-between py-2.5">
+                <dt className="text-muted-foreground uppercase text-xs tracking-wider">Instagram</dt>
+                <dd className="font-mono text-foreground font-medium text-right">{ticket.instagram}</dd>
               </div>
             )}
 
-            <div className="flex items-center justify-between py-1.5">
-              <span className="text-muted-foreground uppercase text-xs tracking-wider">Registrazione</span>
-              <span className="font-mono text-muted-foreground text-xs">{ticket.createdAt}</span>
+            <div className="flex items-center justify-between py-2.5 last:pb-0">
+              <dt className="text-muted-foreground uppercase text-xs tracking-wider">Data Iscrizione</dt>
+              <dd className="font-mono text-muted-foreground text-xs text-right">{ticket.createdAt}</dd>
             </div>
-          </div>
+          </dl>
         </CardContent>
       </Card>
 
-      {/* Warning Box */}
-      <div className="p-4 border border-border bg-muted/40 text-sm space-y-1.5">
+      {/* Box Importante per l'Estrazione */}
+      <div className="p-4 border border-border/70 bg-muted/30 text-sm space-y-1.5">
         <div className="font-heading text-sm font-bold text-foreground">
           Importante per la Proclamazione:
         </div>
-        <p className="text-sm text-muted-foreground leading-relaxed">
-          Il vincitore della cena con Chef Jacopo Lanfranco sarà chiamato al telefono e annunciato in sala <strong>al termine della Chef Battle</strong>.
+        <p className="text-sm text-muted-foreground leading-relaxed font-sans">
+          Il vincitore della cena con Chef Jacopo Lanfranco sarà chiamato al telefono e annunciato in sala{" "}
+          <strong className="text-foreground font-semibold">al termine della Chef Battle</strong>.
           Tieni il telefono acceso e resta presente in sala.
         </p>
       </div>
 
-      {/* Buttons */}
-      <div className="space-y-2.5 pt-1">
+      {/* Azione Nuova Iscrizione */}
+      <div className="pt-2">
         <Button
-          onClick={handleShare}
-          className="w-full h-11 text-xs uppercase tracking-[0.18em] font-semibold rounded-none bg-foreground text-background hover:opacity-90 transition-opacity gap-2"
+          onClick={onReset}
+          className="w-full h-12 text-xs uppercase tracking-[0.18em] font-semibold rounded-none bg-foreground text-background hover:opacity-90 transition-opacity gap-2"
         >
-          <ShareNetwork className="size-4" />
-          Condividi Biglietto
+          <ArrowCounterClockwise className="size-4" />
+          Iscrivi un'altra persona
         </Button>
-
-        <div className="text-center pt-2">
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={onReset}
-            className="text-xs uppercase tracking-wider text-muted-foreground hover:text-foreground rounded-none gap-1.5"
-          >
-            <ArrowCounterClockwise className="size-3.5" />
-            Iscrivi un'altra persona
-          </Button>
-        </div>
       </div>
     </div>
   )
