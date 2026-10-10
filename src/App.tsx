@@ -37,8 +37,8 @@ export function App() {
 
   return (
     <div className="min-h-screen bg-black flex justify-center selection:bg-neutral-800">
-      {/* Mobile edge-to-edge container */}
-      <main className="w-full max-w-md min-h-screen bg-background border-x border-border/40 shadow-2xl flex flex-col px-0 relative">
+      {/* Mobile edge-to-edge container: no side borders on mobile, framed on desktop */}
+      <main className="w-full max-w-md min-h-screen bg-background border-x-0 sm:border-x border-border/40 shadow-2xl flex flex-col px-0 relative">
         {/* Full Bleed Hero Header (No Navbar) */}
         <Header />
 

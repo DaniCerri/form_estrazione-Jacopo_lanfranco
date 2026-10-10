@@ -1,5 +1,4 @@
 import { useState, useId } from "react"
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
@@ -137,20 +136,20 @@ export function GiveawayForm({ onOpenLegal, onSuccess }: GiveawayFormProps) {
   }
 
   return (
-    <Card className="w-full border-x-0 border-t-0 border-b border-border bg-card rounded-none shadow-none">
-      <CardHeader className="px-5 py-4 pb-3 border-b border-border/60">
-        <span className="text-xs uppercase tracking-[0.25em] text-muted-foreground font-medium block">
+    <section className="w-full border-b border-border/60 bg-card">
+      <div className="px-5 py-5 border-b border-border/60">
+        <span className="text-xs uppercase tracking-[0.25em] text-muted-foreground font-semibold block">
           Partecipazione Live
         </span>
-        <CardTitle className="font-heading font-serif text-lg font-medium text-foreground tracking-tight mt-0.5">
+        <h2 className="font-heading font-serif text-lg font-medium text-foreground tracking-tight mt-0.5">
           Modulo di Iscrizione
-        </CardTitle>
-        <CardDescription className="text-sm text-muted-foreground font-sans mt-0.5">
+        </h2>
+        <p className="text-sm text-muted-foreground font-sans mt-0.5">
           Iscriviti adesso durante la serata del 21/10 per concorrere all'estrazione finale.
-        </CardDescription>
-      </CardHeader>
+        </p>
+      </div>
 
-      <CardContent className="p-5 pt-4">
+      <div className="px-5 py-5">
         <form onSubmit={handleSubmit} className="space-y-4.5" noValidate>
           {/* Nome e Cognome */}
           <div className="grid grid-cols-2 gap-3">
@@ -373,7 +372,7 @@ export function GiveawayForm({ onOpenLegal, onSuccess }: GiveawayFormProps) {
             </p>
           </div>
         </form>
-      </CardContent>
-    </Card>
+      </div>
+    </section>
   )
 }

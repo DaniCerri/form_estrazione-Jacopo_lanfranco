@@ -18,9 +18,9 @@ export function HowItWorks() {
   ]
 
   return (
-    <section className="w-full border-b border-border bg-card">
-      <div className="px-4 py-3.5 border-b border-border/60">
-        <span className="text-xs uppercase tracking-[0.25em] text-muted-foreground font-medium block">
+    <section className="w-full border-b border-border/60 bg-card">
+      <div className="px-5 py-4 border-b border-border/60">
+        <span className="text-xs uppercase tracking-[0.25em] text-muted-foreground font-semibold block">
           Regole di Partecipazione
         </span>
         <h2 className="font-heading font-serif text-lg font-medium text-foreground tracking-tight mt-0.5">
@@ -32,7 +32,7 @@ export function HowItWorks() {
         {steps.map((s) => (
           <div
             key={s.num}
-            className="flex items-start gap-4 p-4.5 bg-card"
+            className="flex items-start gap-4 px-5 py-4.5 bg-card"
           >
             <span className="font-heading font-serif text-base font-bold text-foreground/80 tracking-widest pt-0.5">
               {s.num}
