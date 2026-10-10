@@ -18,7 +18,7 @@ L'estrazione dal vivo del vincitore avverrà al termine della serata.
 ## Identità Visiva e Linee Guida
 - **Stile**: Rigorosamente **Black and White**, editoriale, luxury gourmet.
 - **Layout**: Full-bleed edge-to-edge su schermi smartphone (tutti gli elementi e le immagini riempiono la larghezza senza margini di restringimento).
-- **Tipografia**: Outfit Variable (testi e form) e Merriweather Variable (titoli editoriali).
+- **Tipografia**: Outfit Variable (testi e form) e Playfair Display Variable (titoli editoriali luxury).
 - **Immagini Ufficiali**:
   - `/immagini/Hero_Jacopo.avif`
   - `/immagini/Jacopo.avif`
