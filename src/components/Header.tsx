@@ -8,14 +8,14 @@ export function Header() {
         <img
           src={GIVEAWAY_CONFIG.heroImageUrl}
           alt="Chef Battle - Jacopo Lanfranco"
-          className="w-full h-64 sm:h-72 object-cover object-center grayscale contrast-115 brightness-90"
+          className="w-full h-64 sm:h-76 object-cover object-center grayscale contrast-115 brightness-90"
           loading="eager"
         />
 
         {/* Gradient Overlay & Editorial Typography */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/35 to-black/20 flex flex-col justify-end p-5 text-white">
+        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-black/20 flex flex-col justify-end p-5 text-white">
           <div className="mb-1.5">
-            <span className="text-[9px] uppercase tracking-[0.3em] font-medium text-neutral-300">
+            <span className="text-xs uppercase tracking-[0.25em] font-medium text-neutral-300">
               {GIVEAWAY_CONFIG.eventName} • {GIVEAWAY_CONFIG.eventDate}
             </span>
           </div>
@@ -24,7 +24,7 @@ export function Header() {
             Vinci una Cena per Due
           </h1>
 
-          <p className="text-xs text-neutral-300 font-sans tracking-wide mt-1.5">
+          <p className="text-sm text-neutral-300 font-sans tracking-wide mt-1.5 leading-relaxed">
             Esperienza privata esclusiva preparata dallo <strong>Chef {GIVEAWAY_CONFIG.chefName}</strong>
           </p>
         </div>

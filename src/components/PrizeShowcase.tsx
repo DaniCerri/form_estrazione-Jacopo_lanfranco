@@ -1,25 +1,28 @@
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
+import { ForkKnife, Scroll, Wine } from "@phosphor-icons/react"
 import { GIVEAWAY_CONFIG } from "@/data/giveawayConfig"
 
 export function PrizeShowcase() {
   const { prize } = GIVEAWAY_CONFIG
 
+  const icons = [ForkKnife, Scroll, Wine]
+
   return (
     <section className="w-full border-b border-border bg-card">
       {/* Section Header */}
-      <div className="flex items-end justify-between px-4 py-3 border-b border-border/60">
+      <div className="flex items-end justify-between px-4 py-3.5 border-b border-border/60">
         <div>
-          <span className="text-[9px] uppercase tracking-[0.25em] text-muted-foreground font-medium block">
+          <span className="text-xs uppercase tracking-[0.25em] text-muted-foreground font-medium block">
             Il Premio Esclusivo
           </span>
-          <h2 className="font-heading font-serif text-base font-medium text-foreground tracking-tight">
+          <h2 className="font-heading font-serif text-lg font-medium text-foreground tracking-tight mt-0.5">
             L'Esperienza Gastronomica
           </h2>
         </div>
         <Badge
           variant="secondary"
-          className="rounded-none text-[9px] uppercase tracking-[0.15em] font-medium px-2 py-0.5 bg-foreground text-background"
+          className="rounded-none text-[10px] uppercase tracking-[0.18em] font-medium px-2.5 py-1 bg-foreground text-background"
         >
           1 Vincitore
         </Badge>
@@ -35,37 +38,40 @@ export function PrizeShowcase() {
             loading="lazy"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent flex flex-col justify-end p-5 text-white">
-            <span className="text-[9px] uppercase tracking-[0.25em] text-neutral-300 font-medium">
+            <span className="text-xs uppercase tracking-[0.25em] text-neutral-300 font-medium">
               Esperienza Privata
             </span>
-            <h3 className="font-heading font-serif text-xl text-white font-normal leading-snug">
+            <h3 className="font-heading font-serif text-2xl text-white font-normal leading-snug mt-1">
               {prize.title}
             </h3>
-            <p className="text-xs text-neutral-300 italic font-serif">
+            <p className="text-sm text-neutral-300 italic font-serif mt-0.5">
               con lo {prize.chef}
             </p>
           </div>
         </div>
 
-        <CardContent className="p-4 space-y-3.5">
-          <p className="text-xs text-muted-foreground leading-relaxed font-sans">
+        <CardContent className="p-5 space-y-4">
+          <p className="text-sm text-muted-foreground leading-relaxed font-sans">
             {prize.description}
           </p>
 
-          {/* Highlights */}
-          <div className="border-t border-border/60 pt-3 space-y-2">
-            <div className="text-[9px] uppercase tracking-[0.25em] text-muted-foreground font-medium">
+          {/* Highlights with Phosphor icons instead of dashes */}
+          <div className="border-t border-border/60 pt-4 space-y-3">
+            <div className="text-xs uppercase tracking-[0.25em] text-muted-foreground font-semibold">
               Cosa Include il Premio
             </div>
-            <ul className="space-y-1.5 text-xs text-foreground font-sans">
-              {prize.highlights.map((h, i) => (
-                <li key={i} className="flex items-start gap-2 text-xs">
-                  <span className="text-muted-foreground font-serif text-[11px] select-none">
-                    —
-                  </span>
-                  <span className="leading-tight">{h}</span>
-                </li>
-              ))}
+            <ul className="space-y-2.5 text-sm text-foreground font-sans">
+              {prize.highlights.map((h, i) => {
+                const IconComponent = icons[i] ?? ForkKnife
+                return (
+                  <li key={i} className="flex items-center gap-3">
+                    <div className="size-7 rounded-none bg-foreground/10 text-foreground flex items-center justify-center shrink-0 border border-border">
+                      <IconComponent className="size-4" weight="bold" />
+                    </div>
+                    <span className="text-sm font-medium leading-snug">{h}</span>
+                  </li>
+                )
+              })}
             </ul>
           </div>
         </CardContent>

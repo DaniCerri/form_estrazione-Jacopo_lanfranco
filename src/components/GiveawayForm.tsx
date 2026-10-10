@@ -101,7 +101,6 @@ export function GiveawayForm({ onOpenLegal, onSuccess }: GiveawayFormProps) {
 
     setIsSubmitting(true)
 
-    // Simulazione salvataggio su client (senza backend effettivo come da istruzioni)
     setTimeout(() => {
       const randomSuffix = Math.floor(1000 + Math.random() * 9000)
       const ticketCode = `BATTLE-2110-${randomSuffix}`
@@ -139,24 +138,24 @@ export function GiveawayForm({ onOpenLegal, onSuccess }: GiveawayFormProps) {
 
   return (
     <Card className="w-full border-x-0 border-t-0 border-b border-border bg-card rounded-none shadow-none">
-      <CardHeader className="px-4 py-4 pb-3 border-b border-border/60">
-        <span className="text-[9px] uppercase tracking-[0.25em] text-muted-foreground font-medium block">
+      <CardHeader className="px-5 py-4 pb-3 border-b border-border/60">
+        <span className="text-xs uppercase tracking-[0.25em] text-muted-foreground font-medium block">
           Partecipazione Live
         </span>
-        <CardTitle className="font-heading font-serif text-base font-medium text-foreground tracking-tight">
+        <CardTitle className="font-heading font-serif text-lg font-medium text-foreground tracking-tight mt-0.5">
           Modulo di Iscrizione
         </CardTitle>
-        <CardDescription className="text-xs text-muted-foreground font-sans">
+        <CardDescription className="text-sm text-muted-foreground font-sans mt-0.5">
           Iscriviti adesso durante la serata del 21/10 per concorrere all'estrazione finale.
         </CardDescription>
       </CardHeader>
 
-      <CardContent className="p-4 pt-3">
-        <form onSubmit={handleSubmit} className="space-y-4" noValidate>
+      <CardContent className="p-5 pt-4">
+        <form onSubmit={handleSubmit} className="space-y-4.5" noValidate>
           {/* Nome e Cognome */}
-          <div className="grid grid-cols-2 gap-2.5">
-            <div className="space-y-1">
-              <Label htmlFor={nomeId} className="text-[10px] uppercase tracking-wider font-medium text-muted-foreground">
+          <div className="grid grid-cols-2 gap-3">
+            <div className="space-y-1.5">
+              <Label htmlFor={nomeId} className="text-xs uppercase tracking-wider font-semibold text-muted-foreground">
                 Nome <span className="text-foreground">*</span>
               </Label>
               <Input
@@ -166,18 +165,18 @@ export function GiveawayForm({ onOpenLegal, onSuccess }: GiveawayFormProps) {
                 value={formData.nome}
                 onChange={(e) => handleInputChange("nome", e.target.value)}
                 disabled={isSubmitting}
-                className={`h-9 text-xs rounded-none border-border ${
+                className={`h-11 text-sm rounded-none border-border ${
                   errors.nome ? "border-destructive" : ""
                 }`}
                 autoComplete="given-name"
               />
               {errors.nome && (
-                <p className="text-[10px] text-destructive mt-0.5">{errors.nome}</p>
+                <p className="text-xs text-destructive mt-0.5">{errors.nome}</p>
               )}
             </div>
 
-            <div className="space-y-1">
-              <Label htmlFor={cognomeId} className="text-[10px] uppercase tracking-wider font-medium text-muted-foreground">
+            <div className="space-y-1.5">
+              <Label htmlFor={cognomeId} className="text-xs uppercase tracking-wider font-semibold text-muted-foreground">
                 Cognome <span className="text-foreground">*</span>
               </Label>
               <Input
@@ -187,24 +186,24 @@ export function GiveawayForm({ onOpenLegal, onSuccess }: GiveawayFormProps) {
                 value={formData.cognome}
                 onChange={(e) => handleInputChange("cognome", e.target.value)}
                 disabled={isSubmitting}
-                className={`h-9 text-xs rounded-none border-border ${
+                className={`h-11 text-sm rounded-none border-border ${
                   errors.cognome ? "border-destructive" : ""
                 }`}
                 autoComplete="family-name"
               />
               {errors.cognome && (
-                <p className="text-[10px] text-destructive mt-0.5">{errors.cognome}</p>
+                <p className="text-xs text-destructive mt-0.5">{errors.cognome}</p>
               )}
             </div>
           </div>
 
           {/* Telefono */}
-          <div className="space-y-1">
+          <div className="space-y-1.5">
             <div className="flex items-center justify-between">
-              <Label htmlFor={telefonoId} className="text-[10px] uppercase tracking-wider font-medium text-muted-foreground">
+              <Label htmlFor={telefonoId} className="text-xs uppercase tracking-wider font-semibold text-muted-foreground">
                 Telefono <span className="text-foreground">*</span>
               </Label>
-              <span className="text-[10px] text-muted-foreground font-mono">Chiamata a fine serata</span>
+              <span className="text-xs text-muted-foreground font-mono">Chiamata a fine serata</span>
             </div>
             <Input
               id={telefonoId}
@@ -213,19 +212,19 @@ export function GiveawayForm({ onOpenLegal, onSuccess }: GiveawayFormProps) {
               value={formData.telefono}
               onChange={(e) => handleInputChange("telefono", e.target.value)}
               disabled={isSubmitting}
-              className={`h-9 text-xs rounded-none border-border ${
+              className={`h-11 text-sm rounded-none border-border ${
                 errors.telefono ? "border-destructive" : ""
               }`}
               autoComplete="tel"
             />
             {errors.telefono && (
-              <p className="text-[10px] text-destructive mt-0.5">{errors.telefono}</p>
+              <p className="text-xs text-destructive mt-0.5">{errors.telefono}</p>
             )}
           </div>
 
           {/* Email */}
-          <div className="space-y-1">
-            <Label htmlFor={emailId} className="text-[10px] uppercase tracking-wider font-medium text-muted-foreground">
+          <div className="space-y-1.5">
+            <Label htmlFor={emailId} className="text-xs uppercase tracking-wider font-semibold text-muted-foreground">
               Email <span className="text-foreground">*</span>
             </Label>
             <Input
@@ -235,28 +234,28 @@ export function GiveawayForm({ onOpenLegal, onSuccess }: GiveawayFormProps) {
               value={formData.email}
               onChange={(e) => handleInputChange("email", e.target.value)}
               disabled={isSubmitting}
-              className={`h-9 text-xs rounded-none border-border ${
+              className={`h-11 text-sm rounded-none border-border ${
                 errors.email ? "border-destructive" : ""
               }`}
               autoComplete="email"
             />
             {errors.email && (
-              <p className="text-[10px] text-destructive mt-0.5">{errors.email}</p>
+              <p className="text-xs text-destructive mt-0.5">{errors.email}</p>
             )}
           </div>
 
           {/* Instagram (Opzionale) */}
-          <div className="space-y-1">
+          <div className="space-y-1.5">
             <div className="flex items-center justify-between">
-              <Label htmlFor={instagramId} className="text-[10px] uppercase tracking-wider font-medium text-muted-foreground">
+              <Label htmlFor={instagramId} className="text-xs uppercase tracking-wider font-semibold text-muted-foreground">
                 Nickname Instagram
               </Label>
-              <Badge variant="outline" className="text-[9px] uppercase tracking-wider font-normal px-1.5 py-0 h-4 border-border">
+              <Badge variant="outline" className="text-[10px] uppercase tracking-wider font-medium px-2 py-0.5 border-border">
                 Opzionale
               </Badge>
             </div>
             <div className="relative flex items-center">
-              <span className="absolute left-2.5 text-muted-foreground text-xs select-none font-mono">
+              <span className="absolute left-3 text-muted-foreground text-sm select-none font-mono">
                 @
               </span>
               <Input
@@ -266,35 +265,35 @@ export function GiveawayForm({ onOpenLegal, onSuccess }: GiveawayFormProps) {
                 value={formData.instagram.replace(/^@/, "")}
                 onChange={(e) => handleInputChange("instagram", e.target.value)}
                 disabled={isSubmitting}
-                className="h-9 text-xs rounded-none border-border pl-6"
+                className="h-11 text-sm rounded-none border-border pl-7"
                 autoCapitalize="none"
               />
             </div>
-            <p className="text-[10px] text-muted-foreground">
+            <p className="text-xs text-muted-foreground">
               Per la menzione social e la proclamazione in sala.
             </p>
             {errors.instagram && (
-              <p className="text-[10px] text-destructive mt-0.5">{errors.instagram}</p>
+              <p className="text-xs text-destructive mt-0.5">{errors.instagram}</p>
             )}
           </div>
 
           {/* Consensi */}
-          <div className="pt-3 border-t border-border/60 space-y-3">
-            <div className="text-[9px] uppercase tracking-[0.25em] text-muted-foreground font-medium">
+          <div className="pt-3.5 border-t border-border/60 space-y-3.5">
+            <div className="text-xs uppercase tracking-[0.25em] text-muted-foreground font-semibold">
               Consensi e Condizioni
             </div>
 
             {/* Checkbox Termini */}
             <div className="space-y-1">
-              <div className="flex items-start gap-2.5">
+              <div className="flex items-start gap-3">
                 <Checkbox
                   id={terminiId}
                   checked={formData.accettaTermini}
                   onCheckedChange={(checked) => handleInputChange("accettaTermini", checked === true)}
                   disabled={isSubmitting}
-                  className="mt-0.5"
+                  className="mt-1 size-4.5"
                 />
-                <Label htmlFor={terminiId} className="text-[11px] leading-snug cursor-pointer font-normal text-muted-foreground block">
+                <Label htmlFor={terminiId} className="text-xs sm:text-sm leading-relaxed cursor-pointer font-normal text-muted-foreground block">
                   Dichiaro di essere maggiorenne e accetto il{" "}
                   <button
                     type="button"
@@ -307,21 +306,21 @@ export function GiveawayForm({ onOpenLegal, onSuccess }: GiveawayFormProps) {
                 </Label>
               </div>
               {errors.accettaTermini && (
-                <p className="text-[10px] text-destructive pl-6">{errors.accettaTermini}</p>
+                <p className="text-xs text-destructive pl-7">{errors.accettaTermini}</p>
               )}
             </div>
 
             {/* Checkbox Privacy */}
             <div className="space-y-1">
-              <div className="flex items-start gap-2.5">
+              <div className="flex items-start gap-3">
                 <Checkbox
                   id={privacyId}
                   checked={formData.accettaPrivacy}
                   onCheckedChange={(checked) => handleInputChange("accettaPrivacy", checked === true)}
                   disabled={isSubmitting}
-                  className="mt-0.5"
+                  className="mt-1 size-4.5"
                 />
-                <Label htmlFor={privacyId} className="text-[11px] leading-snug cursor-pointer font-normal text-muted-foreground block">
+                <Label htmlFor={privacyId} className="text-xs sm:text-sm leading-relaxed cursor-pointer font-normal text-muted-foreground block">
                   Ho letto e compreso l'{" "}
                   <button
                     type="button"
@@ -334,42 +333,42 @@ export function GiveawayForm({ onOpenLegal, onSuccess }: GiveawayFormProps) {
                 </Label>
               </div>
               {errors.accettaPrivacy && (
-                <p className="text-[10px] text-destructive pl-6">{errors.accettaPrivacy}</p>
+                <p className="text-xs text-destructive pl-7">{errors.accettaPrivacy}</p>
               )}
             </div>
 
-            {/* Checkbox Marketing / Eventi Futuri */}
-            <div className="flex items-start gap-2.5">
+            {/* Checkbox Marketing */}
+            <div className="flex items-start gap-3">
               <Checkbox
                 id={marketingId}
                 checked={formData.accettaMarketing}
                 onCheckedChange={(checked) => handleInputChange("accettaMarketing", checked === true)}
                 disabled={isSubmitting}
-                className="mt-0.5"
+                className="mt-1 size-4.5"
               />
-              <Label htmlFor={marketingId} className="text-[11px] leading-snug cursor-pointer font-normal text-muted-foreground block">
+              <Label htmlFor={marketingId} className="text-xs sm:text-sm leading-relaxed cursor-pointer font-normal text-muted-foreground block">
                 Desidero ricevere inviti e aggiornamenti sui futuri eventi ed esperienze culinarie dello Chef Jacopo Lanfranco (facoltativo).
               </Label>
             </div>
           </div>
 
           {/* Submit Button */}
-          <div className="pt-2">
+          <div className="pt-3">
             <Button
               type="submit"
               disabled={isSubmitting}
-              className="w-full h-11 text-xs uppercase tracking-[0.2em] font-semibold rounded-none bg-foreground text-background hover:opacity-90 transition-opacity flex items-center justify-center gap-2"
+              className="w-full h-12 text-sm uppercase tracking-[0.2em] font-semibold rounded-none bg-foreground text-background hover:opacity-90 transition-opacity flex items-center justify-center gap-2"
             >
               {isSubmitting ? (
                 <>
-                  <CircleNotch className="size-4 animate-spin" />
+                  <CircleNotch className="size-4.5 animate-spin" />
                   <span>Registrazione in corso...</span>
                 </>
               ) : (
                 <span>Partecipa all'Estrazione</span>
               )}
             </Button>
-            <p className="text-[10px] text-center text-muted-foreground mt-2 font-mono">
+            <p className="text-xs text-center text-muted-foreground mt-2.5 font-mono">
               Sorteggio al termine della serata • 21 Ottobre 2026
             </p>
           </div>

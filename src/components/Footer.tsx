@@ -8,15 +8,15 @@ interface FooterProps {
 
 export function Footer({ onOpenLegal }: FooterProps) {
   return (
-    <footer className="pt-6 pb-12 space-y-4 text-center text-xs text-muted-foreground px-2">
+    <footer className="pt-6 pb-12 space-y-4 text-center text-muted-foreground px-4">
       <Separator className="border-border/60" />
 
       {/* Legal navigation links */}
-      <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-2 text-[10px] uppercase tracking-wider font-medium">
+      <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-xs uppercase tracking-wider font-medium">
         <button
           type="button"
           onClick={() => onOpenLegal("termini")}
-          className="hover:text-foreground transition-colors"
+          className="hover:text-foreground transition-colors py-1"
         >
           Regolamento
         </button>
@@ -24,7 +24,7 @@ export function Footer({ onOpenLegal }: FooterProps) {
         <button
           type="button"
           onClick={() => onOpenLegal("privacy")}
-          className="hover:text-foreground transition-colors"
+          className="hover:text-foreground transition-colors py-1"
         >
           Privacy Policy
         </button>
@@ -32,13 +32,13 @@ export function Footer({ onOpenLegal }: FooterProps) {
         <button
           type="button"
           onClick={() => onOpenLegal("cookie")}
-          className="hover:text-foreground transition-colors"
+          className="hover:text-foreground transition-colors py-1"
         >
           Cookie Policy
         </button>
       </div>
 
-      <div className="space-y-1 text-[10px] text-muted-foreground/75 max-w-xs mx-auto leading-relaxed">
+      <div className="space-y-1 text-xs text-muted-foreground/80 max-w-xs mx-auto leading-relaxed">
         <p>
           © 2026 {GIVEAWAY_CONFIG.eventName} • Chef {GIVEAWAY_CONFIG.chefName}.
         </p>

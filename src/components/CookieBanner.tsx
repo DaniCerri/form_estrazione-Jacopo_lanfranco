@@ -27,21 +27,21 @@ export function CookieBanner({ onOpenLegal }: CookieBannerProps) {
 
   return (
     <div className="fixed bottom-0 inset-x-0 z-40 max-w-md mx-auto p-3">
-      <div className="bg-popover/98 backdrop-blur-md border border-border rounded-none p-3.5 shadow-2xl space-y-2.5 animate-in fade-in duration-200">
+      <div className="bg-popover/98 backdrop-blur-md border border-border rounded-none p-4 shadow-2xl space-y-3 animate-in fade-in duration-200">
         <div className="flex items-start justify-between gap-2">
-          <h4 className="text-[10px] uppercase tracking-[0.2em] font-medium text-foreground">
+          <h4 className="text-xs uppercase tracking-[0.2em] font-semibold text-foreground">
             Informativa Cookie
           </h4>
           <button
             onClick={() => handleAccept("necessary")}
-            className="text-muted-foreground hover:text-foreground p-0.5 transition-colors"
+            className="text-muted-foreground hover:text-foreground p-1 transition-colors"
             aria-label="Chiudi banner cookie"
           >
-            <X className="size-3.5" />
+            <X className="size-4" />
           </button>
         </div>
 
-        <p className="text-[11px] text-muted-foreground leading-normal font-sans">
+        <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed font-sans">
           Utilizziamo cookie tecnici essenziali per consentire l'iscrizione all'estrazione. Consulta la nostra{" "}
           <button
             type="button"
@@ -53,10 +53,10 @@ export function CookieBanner({ onOpenLegal }: CookieBannerProps) {
           .
         </p>
 
-        <div className="flex items-center gap-2 pt-0.5">
+        <div className="flex items-center gap-2.5 pt-0.5">
           <Button
             size="sm"
-            className="flex-1 h-7 text-[10px] uppercase tracking-wider font-semibold rounded-none bg-foreground text-background"
+            className="flex-1 h-9 text-xs uppercase tracking-wider font-semibold rounded-none bg-foreground text-background"
             onClick={() => handleAccept("all")}
           >
             Accetta
@@ -64,7 +64,7 @@ export function CookieBanner({ onOpenLegal }: CookieBannerProps) {
           <Button
             size="sm"
             variant="outline"
-            className="flex-1 h-7 text-[10px] uppercase tracking-wider font-medium rounded-none border-border"
+            className="flex-1 h-9 text-xs uppercase tracking-wider font-medium rounded-none border-border"
             onClick={() => handleAccept("necessary")}
           >
             Solo Tecnici

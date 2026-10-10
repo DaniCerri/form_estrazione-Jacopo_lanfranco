@@ -19,11 +19,11 @@ export function HowItWorks() {
 
   return (
     <section className="w-full border-b border-border bg-card">
-      <div className="px-4 py-3 border-b border-border/60">
-        <span className="text-[9px] uppercase tracking-[0.25em] text-muted-foreground font-medium block">
+      <div className="px-4 py-3.5 border-b border-border/60">
+        <span className="text-xs uppercase tracking-[0.25em] text-muted-foreground font-medium block">
           Regole di Partecipazione
         </span>
-        <h2 className="font-heading font-serif text-base font-medium text-foreground tracking-tight">
+        <h2 className="font-heading font-serif text-lg font-medium text-foreground tracking-tight mt-0.5">
           Come Funziona il Contest
         </h2>
       </div>
@@ -32,16 +32,16 @@ export function HowItWorks() {
         {steps.map((s) => (
           <div
             key={s.num}
-            className="flex items-start gap-3.5 p-4 bg-card"
+            className="flex items-start gap-4 p-4.5 bg-card"
           >
-            <span className="font-heading font-serif text-sm font-semibold text-foreground/80 tracking-widest pt-0.5">
+            <span className="font-heading font-serif text-base font-bold text-foreground/80 tracking-widest pt-0.5">
               {s.num}
             </span>
-            <div className="space-y-0.5 min-w-0">
-              <h3 className="text-xs font-semibold uppercase tracking-wider text-foreground">
+            <div className="space-y-1 min-w-0">
+              <h3 className="text-xs sm:text-sm font-semibold uppercase tracking-wider text-foreground">
                 {s.title}
               </h3>
-              <p className="text-[11px] text-muted-foreground leading-normal">
+              <p className="text-sm text-muted-foreground leading-relaxed">
                 {s.desc}
               </p>
             </div>

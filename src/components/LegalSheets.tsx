@@ -31,11 +31,11 @@ export function LegalSheets({
         </div>
 
         {/* Navigation tabs */}
-        <div className="px-4 pt-1 pb-3 flex items-center gap-2 overflow-x-auto border-b border-border">
+        <div className="px-5 pt-1 pb-3 flex items-center gap-2.5 overflow-x-auto border-b border-border">
           <Button
             size="sm"
             variant={activeDoc === "termini" ? "default" : "outline"}
-            className="text-[10px] uppercase tracking-wider h-7 rounded-none shrink-0"
+            className="text-xs uppercase tracking-wider h-8 rounded-none shrink-0"
             onClick={() => onSelectDoc("termini")}
           >
             Regolamento
@@ -43,7 +43,7 @@ export function LegalSheets({
           <Button
             size="sm"
             variant={activeDoc === "privacy" ? "default" : "outline"}
-            className="text-[10px] uppercase tracking-wider h-7 rounded-none shrink-0"
+            className="text-xs uppercase tracking-wider h-8 rounded-none shrink-0"
             onClick={() => onSelectDoc("privacy")}
           >
             Privacy Policy
@@ -51,7 +51,7 @@ export function LegalSheets({
           <Button
             size="sm"
             variant={activeDoc === "cookie" ? "default" : "outline"}
-            className="text-[10px] uppercase tracking-wider h-7 rounded-none shrink-0"
+            className="text-xs uppercase tracking-wider h-8 rounded-none shrink-0"
             onClick={() => onSelectDoc("cookie")}
           >
             Cookie Policy
@@ -59,32 +59,32 @@ export function LegalSheets({
         </div>
 
         {/* Content Body */}
-        <div className="flex-1 overflow-y-auto px-5 py-4 space-y-4 text-xs leading-relaxed font-sans">
+        <div className="flex-1 overflow-y-auto px-5 py-4 space-y-4.5 text-sm leading-relaxed font-sans">
           <SheetHeader className="p-0 text-left">
-            <span className="text-[9px] uppercase tracking-[0.25em] text-muted-foreground font-medium block">
+            <span className="text-xs uppercase tracking-[0.25em] text-muted-foreground font-medium block">
               Documentazione Ufficiale
             </span>
-            <SheetTitle className="font-heading font-serif text-base font-medium text-foreground tracking-tight">
+            <SheetTitle className="font-heading font-serif text-lg font-medium text-foreground tracking-tight mt-0.5">
               {currentDoc.title}
             </SheetTitle>
-            <SheetDescription className="text-[11px] text-muted-foreground font-mono">
+            <SheetDescription className="text-xs text-muted-foreground font-mono mt-0.5">
               Aggiornato il {currentDoc.lastUpdated}
             </SheetDescription>
           </SheetHeader>
 
-          <p className="text-muted-foreground bg-muted/30 p-3 border border-border text-[11px]">
+          <p className="text-muted-foreground bg-muted/30 p-3.5 border border-border text-sm leading-relaxed">
             {currentDoc.intro}
           </p>
 
           <Separator className="border-border/60" />
 
-          <div className="space-y-4">
+          <div className="space-y-4.5">
             {currentDoc.sections.map((section, idx) => (
               <div key={idx} className="space-y-1.5">
-                <h4 className="font-heading font-serif text-xs font-semibold text-foreground">
+                <h4 className="font-heading font-serif text-sm font-semibold text-foreground">
                   {section.title}
                 </h4>
-                <div className="space-y-1 text-muted-foreground text-[11px]">
+                <div className="space-y-1.5 text-muted-foreground text-sm">
                   {section.content.map((p, pIdx) => (
                     <p key={pIdx}>{p}</p>
                   ))}
@@ -95,7 +95,7 @@ export function LegalSheets({
 
           <div className="pt-4 pb-6">
             <Button
-              className="w-full h-9 text-[11px] uppercase tracking-widest font-semibold rounded-none bg-foreground text-background"
+              className="w-full h-11 text-xs uppercase tracking-widest font-semibold rounded-none bg-foreground text-background"
               onClick={() => onOpenChange(false)}
             >
               Chiudi
