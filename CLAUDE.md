@@ -18,10 +18,16 @@ L'estrazione dal vivo del vincitore avverrà al termine della serata.
 ## Identità Visiva e Linee Guida
 - **Stile**: Rigorosamente **Black and White**, editoriale, luxury gourmet.
 - **Layout**: Full-bleed edge-to-edge su schermi smartphone (tutti gli elementi e le immagini riempiono la larghezza senza margini di restringimento).
-- **Tipografia**: Outfit Variable (testi e form) e Playfair Display Variable (titoli editoriali luxury).
-- **Immagini Ufficiali**:
+- **Tipografia**: Outfit Variable (testi e form) e Playfair Display Variable (titoli editoriali luxury), self-hosted in `src/assets/fonts` e ritagliati (`scripts/ritaglia_font.sh`).
+- **Immagini Ufficiali** (originali in `immagini/`, versioni servite generate da `scripts/ottimizza_immagini.py`: ritaglio + bianco e nero già applicato, niente filtri CSS):
   - `/immagini/Hero_Jacopo.avif`
   - `/immagini/Jacopo.avif`
+
+## Peso della pagina (rete scarsa in sala)
+- Preact (non React), elementi nativi (`<dialog>`, `<details>`, checkbox), icone inline in `src/components/icons.tsx`. Niente shadcn/base-ui: non reintrodurre librerie UI pesanti.
+- JS e CSS finiscono inline in `index.html` (plugin `inlineAppShell` in `vite.config.ts`): niente code splitting né `import()` dinamici, i chunk lazy non funzionerebbero.
+- Sezioni sotto la piega con l'utility `sotto-piega` (`content-visibility: auto`); foto del premio e corsivo caricati con `useVicino` (`src/lib/vicino.ts`).
+- Eventi Preact: `onInput` per i campi di testo (`onChange` scatta solo al blur), attributi SVG in kebab-case.
 
 ## Dati del Modulo
 - **Nome**, **Cognome**, **Telefono** (chiamata del vincitore), **Email** (obbligatori)
@@ -40,4 +46,4 @@ L'estrazione dal vivo del vincitore avverrà al termine della serata.
 - `Dockerfile`: Multi-stage build (Node 22 Alpine per build statico + Nginx Alpine per il serving).
 - `nginx.conf.template`: `$PORT` da Railway, proxy `/api` e `/admin` verso `$BACKEND_URL` (rete privata, resolver `$NGINX_RESOLVER`) tramite `envsubst`.
 - `.dockerignore`: Esclude `node_modules`, `dist` e file non necessari per build veloci.
-- Routing SPA con fallback a `index.html` e compressione gzip attiva.
+- Routing SPA con fallback a `index.html`; `index.html` precompresso con zopfli nel Dockerfile e servito con `gzip_static`.

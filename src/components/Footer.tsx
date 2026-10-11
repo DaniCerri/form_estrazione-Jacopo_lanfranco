@@ -8,7 +8,7 @@ interface FooterProps {
 
 export function Footer({ onOpenLegal }: FooterProps) {
   return (
-    <footer className="pt-6 pb-12 space-y-4 text-center text-muted-foreground px-4">
+    <footer className="pt-6 pb-12 space-y-4 text-center text-muted-foreground px-4 sotto-piega [--altezza-stimata:330px]">
       {/* Legal navigation links */}
       <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-0 text-xs uppercase tracking-wider font-medium">
         <button

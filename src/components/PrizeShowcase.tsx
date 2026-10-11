@@ -1,27 +1,35 @@
 import { GIVEAWAY_CONFIG } from "@/data/giveawayConfig"
+import { useVicino } from "@/lib/vicino"
 
 export function PrizeShowcase() {
   const { prize } = GIVEAWAY_CONFIG
+  // Foto e corsivo si scaricano solo se l'utente scorre fin qui
+  const [fotoRef, vicino] = useVicino<HTMLDivElement>()
 
   return (
-    <section className="w-full border-b border-border/60 bg-background">
+    <section className="w-full border-b border-border/60 bg-background sotto-piega [--altezza-stimata:790px]">
       <h2 className="font-heading text-2xl font-normal text-foreground tracking-tight px-5 pt-12 pb-6">
         Il premio
       </h2>
 
-      <div className="relative w-full">
-        <img
-          src={prize.imageUrl}
-          alt="Chef Jacopo Lanfranco"
-          className="w-full h-72 sm:h-80 object-cover object-top grayscale contrast-110 brightness-95"
-          loading="lazy"
-          decoding="async"
-        />
+      <div ref={fotoRef} className="relative w-full">
+        {vicino ? (
+          <img
+            src={prize.imageUrl}
+            alt="Chef Jacopo Lanfranco"
+            width={896}
+            height={764}
+            className="w-full h-72 sm:h-80 object-cover object-top"
+            decoding="async"
+          />
+        ) : (
+          <div className="w-full h-72 sm:h-80 bg-card" />
+        )}
         <div className="absolute inset-0 bg-gradient-to-t from-background via-background/30 to-transparent flex flex-col justify-end p-5 text-foreground">
           <h3 className="font-heading text-2xl text-foreground font-light tracking-tight leading-tight">
             {prize.title}
           </h3>
-          <p className="text-sm text-foreground/75 italic font-heading mt-1">
+          <p className={`text-sm text-foreground/75 font-heading mt-1 ${vicino ? "italic" : ""}`}>
             con lo {prize.chef}
           </p>
         </div>

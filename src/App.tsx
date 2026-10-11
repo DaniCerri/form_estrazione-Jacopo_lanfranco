@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState } from "preact/hooks"
 import { Header } from "@/components/Header"
 import { GiveawayForm } from "@/components/GiveawayForm"
 import { PrizeShowcase } from "@/components/PrizeShowcase"

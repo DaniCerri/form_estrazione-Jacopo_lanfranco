@@ -10,7 +10,9 @@ server {
     # può partire dopo nginx senza farlo crashare)
     resolver ${NGINX_RESOLVER} valid=10s ipv6=on;
 
-    # Gzip compression for fast mobile loading
+    # index.html è precompresso in build (zopfli, ~5% meglio di gzip -9): servito così com'è.
+    # gzip dinamico solo per il resto (risposte del back-end)
+    gzip_static on;
     gzip on;
     gzip_vary on;
     gzip_proxied any;
@@ -34,6 +36,18 @@ server {
         client_max_body_size 16k;
     }
 
+    # Niente favicon: rispondere vuoto invece di rimandare l'intera pagina
+    location = /favicon.ico {
+        access_log off;
+        log_not_found off;
+        return 204;
+    }
+    location ~ ^/apple-touch-icon {
+        access_log off;
+        log_not_found off;
+        return 204;
+    }
+
     # SPA routing: fallback all non-file routes to index.html
     location / {
         try_files $uri $uri/ /index.html;
@@ -46,6 +60,7 @@ server {
 
     # Cache static build assets
     location /assets/ {
+        try_files $uri =404;
         expires 1y;
         add_header Cache-Control "public, max-age=31536000, immutable";
         add_header X-Content-Type-Options "nosniff" always;
@@ -56,6 +71,7 @@ server {
 
     # Cache images
     location /immagini/ {
+        try_files $uri =404;
         expires 30d;
         add_header Cache-Control "public, max-age=2592000";
         add_header X-Content-Type-Options "nosniff" always;

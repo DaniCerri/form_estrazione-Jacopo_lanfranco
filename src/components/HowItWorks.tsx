@@ -18,7 +18,7 @@ export function HowItWorks() {
   ]
 
   return (
-    <section className="w-full border-b border-border/60 bg-background">
+    <section className="w-full border-b border-border/60 bg-background sotto-piega [--altezza-stimata:445px]">
       <h2 className="font-heading text-xl font-normal text-foreground tracking-tight px-5 pt-8 pb-4">
         Come funziona
       </h2>

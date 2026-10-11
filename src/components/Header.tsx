@@ -7,9 +7,9 @@ export function Header() {
         <img
           src={GIVEAWAY_CONFIG.heroImageUrl}
           alt="Chef Battle - Jacopo Lanfranco"
-          width={980}
+          width={640}
           height={593}
-          className="w-full h-[26rem] sm:h-[28rem] object-cover object-right grayscale contrast-115 brightness-90"
+          className="w-full h-[26rem] sm:h-[28rem] object-cover object-right"
           loading="eager"
           fetchPriority="high"
           decoding="async"

@@ -1,9 +1,6 @@
-import { useState, useId, type ReactNode } from "react"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Button } from "@/components/ui/button"
-import { Checkbox } from "@/components/ui/checkbox"
-import { CircleNotch } from "@phosphor-icons/react"
+import { useState, useId } from "preact/hooks"
+import type { ComponentChildren } from "preact"
+import { CheckIcon, SpinnerIcon } from "@/components/icons"
 import { inviaIscrizione } from "@/lib/api"
 import { ZONE, codiceZonaDaUrl } from "@/lib/zona"
 import { LEGAL_INFO } from "@/data/legalTexts"
@@ -34,6 +31,11 @@ const CAMPI_SERVER: Record<string, keyof GiveawayFormData> = {
   accetta_privacy: "accettaPrivacy",
 }
 
+const LABEL = "flex items-center gap-2 text-xs select-none uppercase tracking-wider font-semibold text-muted-foreground"
+
+const INPUT =
+  "h-12 w-full min-w-0 rounded-none border border-border bg-input/30 py-1 text-base transition-colors outline-none placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-1 focus-visible:ring-ring/50 disabled:pointer-events-none disabled:cursor-not-allowed disabled:bg-input/80 disabled:opacity-50 aria-invalid:border-destructive/50 aria-invalid:ring-1 aria-invalid:ring-destructive/40"
+
 interface GiveawayFormProps {
   onOpenLegal: (doc: LegalDocType) => void
   onSuccess: (registration: RegistrationData) => void
@@ -46,26 +48,31 @@ interface ConsensoProps {
   disabled: boolean
   error?: string
   required?: boolean
-  children: ReactNode
+  children: ComponentChildren
 }
 
 function Consenso({ id, checked, onChange, disabled, error, required, children }: ConsensoProps) {
   return (
     <div className="space-y-1">
       <div className="flex items-start gap-3">
-        <Checkbox
-          id={id}
-          checked={checked}
-          aria-invalid={!!error}
-          aria-describedby={error ? `${id}-error` : undefined}
-          onCheckedChange={(c) => onChange(c === true)}
-          disabled={disabled}
-          className="mt-1 size-4.5"
-        />
-        <Label htmlFor={id} className="text-xs sm:text-sm leading-relaxed cursor-pointer font-normal text-muted-foreground block">
+        {/* Checkbox nativa; il ::after allarga l'area di tocco */}
+        <label className="relative mt-1 grid size-4.5 shrink-0 place-items-center after:absolute after:-inset-x-3 after:-inset-y-2">
+          <input
+            id={id}
+            type="checkbox"
+            checked={checked}
+            aria-invalid={!!error}
+            aria-describedby={error ? `${id}-error` : undefined}
+            onChange={(e) => onChange(e.currentTarget.checked)}
+            disabled={disabled}
+            className="peer absolute inset-0 z-10 m-0 cursor-pointer appearance-none rounded-none border border-input bg-input/30 transition-colors outline-none checked:border-primary checked:bg-primary focus-visible:border-ring focus-visible:ring-1 focus-visible:ring-ring/50 aria-invalid:border-destructive/50 aria-invalid:ring-1 aria-invalid:ring-destructive/40 aria-invalid:checked:border-primary disabled:cursor-not-allowed disabled:opacity-50"
+          />
+          <CheckIcon className="pointer-events-none relative z-20 size-3.5 text-primary-foreground opacity-0 peer-checked:opacity-100" />
+        </label>
+        <label htmlFor={id} className="block text-xs sm:text-sm leading-relaxed cursor-pointer select-none font-normal text-muted-foreground">
           {children}
           {required && <span className="text-foreground"> *</span>}
-        </Label>
+        </label>
       </div>
       {error && (
         <p id={`${id}-error`} className="text-xs text-destructive pl-7">{error}</p>
@@ -74,7 +81,7 @@ function Consenso({ id, checked, onChange, disabled, error, required, children }
   )
 }
 
-function LinkLegale({ onClick, children }: { onClick: () => void; children: ReactNode }) {
+function LinkLegale({ onClick, children }: { onClick: () => void; children: ComponentChildren }) {
   return (
     <button
       type="button"
@@ -199,12 +206,7 @@ export function GiveawayForm({ onOpenLegal, onSuccess }: GiveawayFormProps) {
   const focusPrimoErrore = (newErrors: FormErrors) => {
     const firstKey = FIELD_ORDER.find((key) => newErrors[key])
     if (!firstKey) return false
-    const found = document.getElementById(fieldIds[firstKey]!)
-    // Base UI Checkbox puts the id on a hidden input; the focusable element is the role="checkbox" root
-    const el =
-      found instanceof HTMLInputElement && found.type === "checkbox"
-        ? (found.parentElement?.querySelector<HTMLElement>('[role="checkbox"]') ?? found)
-        : found
+    const el = document.getElementById(fieldIds[firstKey]!)
     if (el) {
       el.focus({ preventScroll: true })
       const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches
@@ -213,7 +215,7 @@ export function GiveawayForm({ onOpenLegal, onSuccess }: GiveawayFormProps) {
     return true
   }
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: Event) => {
     e.preventDefault()
     if (isSubmitting) return
     setErroreInvio(null)
@@ -223,6 +225,8 @@ export function GiveawayForm({ onOpenLegal, onSuccess }: GiveawayFormProps) {
     if (focusPrimoErrore(newErrors)) return
 
     setIsSubmitting(true)
+    // Il corsivo serve solo nella conferma: si scarica mentre parte l'iscrizione
+    document.fonts.load('italic 400 1em "Playfair Display Variable"').catch(() => {})
 
     const instagram = formData.instagram.replace(/^@/, "").trim()
     const esito = await inviaIscrizione({
@@ -324,24 +328,24 @@ export function GiveawayForm({ onOpenLegal, onSuccess }: GiveawayFormProps) {
               tabIndex={-1}
               autoComplete="off"
               value={honeypot}
-              onChange={(e) => setHoneypot(e.target.value)}
+              onInput={(e) => setHoneypot(e.currentTarget.value)}
             />
           </div>
 
           {/* Nome e Cognome */}
           <div className="grid grid-cols-2 gap-3">
             <div className="space-y-1.5">
-              <Label htmlFor={nomeId} className="text-xs uppercase tracking-wider font-semibold text-muted-foreground">
+              <label htmlFor={nomeId} className={LABEL}>
                 Nome <span className="text-foreground">*</span>
-              </Label>
-              <Input
+              </label>
+              <input
                 id={nomeId}
                 type="text"
                 placeholder="es. Mario"
                 value={formData.nome}
-                onChange={(e) => handleInputChange("nome", e.target.value)}
+                onInput={(e) => handleInputChange("nome", e.currentTarget.value)}
                 disabled={isSubmitting}
-                className="h-12 text-base md:text-base rounded-none border-border"
+                className={`${INPUT} px-2.5`}
                 aria-invalid={!!errors.nome}
                 aria-describedby={errors.nome ? `${nomeId}-error` : undefined}
                 autoComplete="given-name"
@@ -353,17 +357,17 @@ export function GiveawayForm({ onOpenLegal, onSuccess }: GiveawayFormProps) {
             </div>
 
             <div className="space-y-1.5">
-              <Label htmlFor={cognomeId} className="text-xs uppercase tracking-wider font-semibold text-muted-foreground">
+              <label htmlFor={cognomeId} className={LABEL}>
                 Cognome <span className="text-foreground">*</span>
-              </Label>
-              <Input
+              </label>
+              <input
                 id={cognomeId}
                 type="text"
                 placeholder="es. Rossi"
                 value={formData.cognome}
-                onChange={(e) => handleInputChange("cognome", e.target.value)}
+                onInput={(e) => handleInputChange("cognome", e.currentTarget.value)}
                 disabled={isSubmitting}
-                className="h-12 text-base md:text-base rounded-none border-border"
+                className={`${INPUT} px-2.5`}
                 aria-invalid={!!errors.cognome}
                 aria-describedby={errors.cognome ? `${cognomeId}-error` : undefined}
                 autoComplete="family-name"
@@ -378,19 +382,19 @@ export function GiveawayForm({ onOpenLegal, onSuccess }: GiveawayFormProps) {
           {/* Telefono */}
           <div className="space-y-1.5">
             <div className="flex items-center justify-between">
-              <Label htmlFor={telefonoId} className="text-xs uppercase tracking-wider font-semibold text-muted-foreground">
+              <label htmlFor={telefonoId} className={LABEL}>
                 Telefono <span className="text-foreground">*</span>
-              </Label>
+              </label>
               <span className="text-xs text-muted-foreground font-mono">Chiamata a fine serata</span>
             </div>
-            <Input
+            <input
               id={telefonoId}
               type="tel"
               placeholder="+39 333 1234567"
               value={formData.telefono}
-              onChange={(e) => handleInputChange("telefono", e.target.value)}
+              onInput={(e) => handleInputChange("telefono", e.currentTarget.value)}
               disabled={isSubmitting}
-              className="h-12 text-base md:text-base rounded-none border-border"
+              className={`${INPUT} px-2.5`}
               aria-invalid={!!errors.telefono}
               aria-describedby={errors.telefono ? `${telefonoId}-error` : undefined}
               autoComplete="tel"
@@ -403,22 +407,22 @@ export function GiveawayForm({ onOpenLegal, onSuccess }: GiveawayFormProps) {
 
           {/* Email */}
           <div className="space-y-1.5">
-            <Label htmlFor={emailId} className="text-xs uppercase tracking-wider font-semibold text-muted-foreground">
+            <label htmlFor={emailId} className={LABEL}>
               Email <span className="text-foreground">*</span>
-            </Label>
-            <Input
+            </label>
+            <input
               id={emailId}
               type="email"
               placeholder="mario.rossi@email.com"
               value={formData.email}
-              onChange={(e) => handleInputChange("email", e.target.value)}
+              onInput={(e) => handleInputChange("email", e.currentTarget.value)}
               disabled={isSubmitting}
-              className="h-12 text-base md:text-base rounded-none border-border"
+              className={`${INPUT} px-2.5`}
               aria-invalid={!!errors.email}
               aria-describedby={errors.email ? `${emailId}-error` : undefined}
               autoComplete="email"
               autoCapitalize="none"
-              spellCheck={false}
+              spellcheck={false}
               maxLength={254}
             />
             {errors.email && (
@@ -428,26 +432,26 @@ export function GiveawayForm({ onOpenLegal, onSuccess }: GiveawayFormProps) {
 
           {/* Instagram (Opzionale) */}
           <div className="space-y-1.5">
-            <Label htmlFor={instagramId} className="text-xs uppercase tracking-wider font-semibold text-muted-foreground">
+            <label htmlFor={instagramId} className={LABEL}>
               Nickname Instagram{" "}
               <span className="lowercase tracking-normal font-normal">(facoltativo)</span>
-            </Label>
+            </label>
             <div className="relative flex items-center">
               <span className="absolute left-3 text-muted-foreground text-base select-none font-mono">
                 @
               </span>
-              <Input
+              <input
                 id={instagramId}
                 type="text"
                 placeholder="mariorossi"
                 value={formData.instagram.replace(/^@/, "")}
-                onChange={(e) => handleInputChange("instagram", e.target.value)}
+                onInput={(e) => handleInputChange("instagram", e.currentTarget.value)}
                 disabled={isSubmitting}
-                className="h-12 text-base md:text-base rounded-none border-border pl-7"
+                className={`${INPUT} pl-7 pr-2.5`}
                 autoCapitalize="none"
                 autoCorrect="off"
                 autoComplete="off"
-                spellCheck={false}
+                spellcheck={false}
                 maxLength={31}
                 aria-invalid={!!errors.instagram}
                 aria-describedby={errors.instagram ? `${instagramId}-error` : undefined}
@@ -562,20 +566,20 @@ export function GiveawayForm({ onOpenLegal, onSuccess }: GiveawayFormProps) {
                 {erroreInvio}
               </p>
             )}
-            <Button
+            <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full h-12 text-sm uppercase tracking-[0.2em] font-semibold rounded-none bg-foreground text-background hover:opacity-90 transition-opacity flex items-center justify-center gap-2"
+              className="flex w-full h-12 items-center justify-center gap-2 border border-transparent px-2.5 text-sm uppercase tracking-[0.2em] font-semibold whitespace-nowrap bg-foreground text-background hover:opacity-90 transition-opacity outline-none select-none focus-visible:border-ring focus-visible:ring-1 focus-visible:ring-ring/50 active:translate-y-px disabled:pointer-events-none disabled:opacity-50"
             >
               {isSubmitting ? (
                 <>
-                  <CircleNotch className="size-4.5 animate-spin" />
+                  <SpinnerIcon className="size-4.5 animate-spin" />
                   <span>Registrazione in corso...</span>
                 </>
               ) : (
                 <span>Partecipa all'Estrazione</span>
               )}
-            </Button>
+            </button>
             <p className="text-xs text-muted-foreground mt-3 leading-relaxed">
               Titolare del trattamento: {LEGAL_INFO.promotore.ragioneSociale}. I dati servono a gestire
               l'estrazione e contattare il vincitore.{" "}

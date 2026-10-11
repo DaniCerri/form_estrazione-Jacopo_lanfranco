@@ -11,6 +11,9 @@ RUN npm ci
 COPY . .
 RUN npm run build
 
+# Precompressione massima di index.html (contiene JS e CSS inline): nginx usa il .gz
+RUN apk add --no-cache zopfli && find dist -name '*.html' -exec zopfli --i50 {} \;
+
 # Stage 2: Serve with Nginx Alpine
 FROM nginx:alpine
 

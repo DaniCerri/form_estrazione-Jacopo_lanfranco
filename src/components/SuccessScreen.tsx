@@ -1,4 +1,3 @@
-import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import type { RegistrationData } from "@/types/giveaway"
 import { GIVEAWAY_CONFIG } from "@/data/giveawayConfig"
 
@@ -8,7 +7,7 @@ interface SuccessScreenProps {
 
 export function SuccessScreen({ registration }: SuccessScreenProps) {
   return (
-    <div className="w-full px-5 py-6 space-y-6 animate-in fade-in duration-300">
+    <div className="w-full px-5 py-6 space-y-6 animate-fade-in">
       {/* Editorial Header - Conferma */}
       <header className="pb-8 border-b border-border/60">
         <h2 className="mt-4 font-heading text-5xl font-light leading-[1.02] tracking-tight text-foreground break-words">
@@ -23,8 +22,8 @@ export function SuccessScreen({ registration }: SuccessScreenProps) {
       </header>
 
       {/* Riepilogo Dati */}
-      <Card className="border border-border/80 bg-card rounded-none shadow-none">
-        <CardHeader className="p-4 border-b border-border/60 bg-muted/20">
+      <div className="flex flex-col gap-4 overflow-hidden py-4 border border-border/80 bg-card text-card-foreground text-xs/relaxed">
+        <div className="p-4 border-b border-border/60 bg-muted/20">
           <div className="flex items-center justify-between">
             <span className="text-xs uppercase tracking-[0.25em] font-semibold text-foreground">
               Riepilogo Dati
@@ -33,9 +32,9 @@ export function SuccessScreen({ registration }: SuccessScreenProps) {
               Chef Battle 2026
             </span>
           </div>
-        </CardHeader>
+        </div>
 
-        <CardContent className="p-5">
+        <div className="p-5">
           <dl className="divide-y divide-border/40 text-sm font-sans">
             <div className="flex items-center justify-between py-2.5 first:pt-0">
               <dt className="text-muted-foreground uppercase text-xs tracking-wider">Partecipante</dt>
@@ -66,8 +65,8 @@ export function SuccessScreen({ registration }: SuccessScreenProps) {
               <dd className="font-mono text-muted-foreground text-xs text-right">{registration.createdAt}</dd>
             </div>
           </dl>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
 
       {/* Box Importante per l'Estrazione */}
       <div className="p-4 border border-border/70 bg-muted/30 text-sm space-y-1.5">
