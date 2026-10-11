@@ -3,7 +3,7 @@ export function HowItWorks() {
     {
       num: "01",
       title: "Iscriviti",
-      desc: "Compila il modulo con i tuoi recapiti veritieri. Servono per contattarti se vinci.",
+      desc: "Compila il modulo con i tuoi dati. Li useremo per contattarti in caso di vincita.",
     },
     {
       num: "02",
@@ -13,7 +13,7 @@ export function HowItWorks() {
     {
       num: "03",
       title: "Estrazione a fine serata",
-      desc: "Al termine della Chef Battle il vincitore viene estratto alla presenza di un notaio. Tieni il telefono a portata di mano e resta in sala.",
+      desc: "Al termine della Chef Battle il vincitore viene estratto live. Tieni il telefono a portata di mano e resta in sala.",
     },
   ]
 

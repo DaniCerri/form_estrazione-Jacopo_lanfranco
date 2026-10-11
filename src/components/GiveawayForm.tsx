@@ -226,7 +226,7 @@ export function GiveawayForm({ onOpenLegal, onSuccess }: GiveawayFormProps) {
 
     setIsSubmitting(true)
     // Il corsivo serve solo nella conferma: si scarica mentre parte l'iscrizione
-    document.fonts.load('italic 400 1em "Playfair Display Variable"').catch(() => {})
+    document.fonts.load('italic 400 1em "Playfair Display Variable"').catch(() => { })
 
     const instagram = formData.instagram.replace(/^@/, "").trim()
     const esito = await inviaIscrizione({
@@ -312,7 +312,7 @@ export function GiveawayForm({ onOpenLegal, onSuccess }: GiveawayFormProps) {
           Iscriviti all'estrazione
         </h2>
         <p className="text-sm text-muted-foreground font-sans mt-1">
-          Pochi secondi. Il vincitore viene estratto a fine serata.
+          Compila il modulo qui sotto con i tuoi dati. Il vincitore sarà estratto a fine serata.
         </p>
       </div>
 

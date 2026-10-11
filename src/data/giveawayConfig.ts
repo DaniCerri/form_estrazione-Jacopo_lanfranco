@@ -43,7 +43,7 @@ export const GIVEAWAY_CONFIG = {
     {
       question: "Quando avverrà l'estrazione del vincitore?",
       answer:
-        "Questa sera stessa (21/10/2026), dal vivo al termine della Chef Battle, dopo la chiusura delle iscrizioni. L'estrazione è casuale e avviene alla presenza di un notaio o di un funzionario della Camera di Commercio.",
+        "Questa sera stessa (21/10/2026), dal vivo al termine della Chef Battle, dopo la chiusura delle iscrizioni. L'estrazione è casuale.",
     },
     {
       question: "Chi può partecipare?",
