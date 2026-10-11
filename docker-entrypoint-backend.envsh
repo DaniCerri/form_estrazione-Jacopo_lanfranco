@@ -1,0 +1,26 @@
+#!/bin/sh
+# Normalizza BACKEND_URL prima dell'envsubst del template nginx.
+# Accetta "host", "host:porta" o "http://host:porta" e logga un errore chiaro
+# se l'host è vuoto (riferimento Railway ${{servizio.RAILWAY_PRIVATE_DOMAIN}} sbagliato).
+
+url="${BACKEND_URL:-}"
+case "$url" in
+  http://*|https://*) ;;
+  *) url="http://$url" ;;
+esac
+url="${url%/}"
+
+hostport="${url#*://}"
+host="${hostport%%:*}"
+if [ -z "$host" ]; then
+  echo "ERRORE: BACKEND_URL senza host (valore: '${BACKEND_URL:-}')." >&2
+  echo "        Controlla il nome del servizio nel riferimento \${{<servizio>.RAILWAY_PRIVATE_DOMAIN}}" >&2
+  echo "        oppure scrivi direttamente http://<servizio>.railway.internal:8000" >&2
+fi
+case "$hostport" in
+  *:*) ;;
+  *) url="$url:8000" ;;
+esac
+
+export BACKEND_URL="$url"
+echo "Proxy /api e /admin -> $BACKEND_URL"

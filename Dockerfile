@@ -20,6 +20,9 @@ COPY --from=builder /app/dist /usr/share/nginx/html
 # Copy Nginx template for automatic Railway $PORT substitution via envsubst
 COPY nginx.conf.template /etc/nginx/templates/default.conf.template
 
+# Normalizza BACKEND_URL (i file .envsh vengono letti dall'entrypoint prima dell'envsubst)
+COPY docker-entrypoint-backend.envsh /docker-entrypoint.d/15-backend-url.envsh
+
 # Default port fallback (Railway will inject PORT dynamically)
 ENV PORT=80
 # Back-end sulla rete privata Railway e resolver DNS interno (fd12::10)
