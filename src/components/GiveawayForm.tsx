@@ -1,10 +1,13 @@
-import { useState, useId } from "react"
+import { useState, useId, type ReactNode } from "react"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import { CircleNotch } from "@phosphor-icons/react"
-import type { GiveawayFormData, FormErrors, RegistrationData, LegalDocType } from "@/types/giveaway"
+import { inviaIscrizione } from "@/lib/api"
+import { ZONE, codiceZonaDaUrl } from "@/lib/zona"
+import { LEGAL_INFO } from "@/data/legalTexts"
+import type { GiveawayFormData, FormErrors, RegistrationData, LegalDocType, ZonaId } from "@/types/giveaway"
 
 const FIELD_ORDER: (keyof GiveawayFormData)[] = [
   "nome",
@@ -12,13 +15,75 @@ const FIELD_ORDER: (keyof GiveawayFormData)[] = [
   "telefono",
   "email",
   "instagram",
+  "zona",
+  "accettaMaggioreEta",
   "accettaTermini",
   "accettaPrivacy",
 ]
 
+// Nomi dei campi del back-end -> campi del form
+const CAMPI_SERVER: Record<string, keyof GiveawayFormData> = {
+  nome: "nome",
+  cognome: "cognome",
+  telefono: "telefono",
+  email: "email",
+  instagram: "instagram",
+  zona: "zona",
+  accetta_maggiore_eta: "accettaMaggioreEta",
+  accetta_regolamento: "accettaTermini",
+  accetta_privacy: "accettaPrivacy",
+}
+
 interface GiveawayFormProps {
   onOpenLegal: (doc: LegalDocType) => void
   onSuccess: (registration: RegistrationData) => void
+}
+
+interface ConsensoProps {
+  id: string
+  checked: boolean
+  onChange: (checked: boolean) => void
+  disabled: boolean
+  error?: string
+  required?: boolean
+  children: ReactNode
+}
+
+function Consenso({ id, checked, onChange, disabled, error, required, children }: ConsensoProps) {
+  return (
+    <div className="space-y-1">
+      <div className="flex items-start gap-3">
+        <Checkbox
+          id={id}
+          checked={checked}
+          aria-invalid={!!error}
+          aria-describedby={error ? `${id}-error` : undefined}
+          onCheckedChange={(c) => onChange(c === true)}
+          disabled={disabled}
+          className="mt-1 size-4.5"
+        />
+        <Label htmlFor={id} className="text-xs sm:text-sm leading-relaxed cursor-pointer font-normal text-muted-foreground block">
+          {children}
+          {required && <span className="text-foreground"> *</span>}
+        </Label>
+      </div>
+      {error && (
+        <p id={`${id}-error`} className="text-xs text-destructive pl-7">{error}</p>
+      )}
+    </div>
+  )
+}
+
+function LinkLegale({ onClick, children }: { onClick: () => void; children: ReactNode }) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className="text-foreground underline underline-offset-2 hover:opacity-75 inline font-medium"
+    >
+      {children}
+    </button>
+  )
 }
 
 export function GiveawayForm({ onOpenLegal, onSuccess }: GiveawayFormProps) {
@@ -27,9 +92,13 @@ export function GiveawayForm({ onOpenLegal, onSuccess }: GiveawayFormProps) {
   const telefonoId = useId()
   const emailId = useId()
   const instagramId = useId()
+  const zonaId = useId()
+  const etaId = useId()
   const terminiId = useId()
   const privacyId = useId()
+  const menzioneId = useId()
   const marketingId = useId()
+  const honeypotId = useId()
 
   const fieldIds: Partial<Record<keyof GiveawayFormData, string>> = {
     nome: nomeId,
@@ -37,9 +106,14 @@ export function GiveawayForm({ onOpenLegal, onSuccess }: GiveawayFormProps) {
     telefono: telefonoId,
     email: emailId,
     instagram: instagramId,
+    zona: `${zonaId}-${ZONE[0].id}`,
+    accettaMaggioreEta: etaId,
     accettaTermini: terminiId,
     accettaPrivacy: privacyId,
   }
+
+  // Codice della zona dal QR; se manca o non è valido il form chiede la zona
+  const [codiceQr, setCodiceQr] = useState<string | null>(codiceZonaDaUrl)
 
   const [formData, setFormData] = useState<GiveawayFormData>({
     nome: "",
@@ -47,13 +121,20 @@ export function GiveawayForm({ onOpenLegal, onSuccess }: GiveawayFormProps) {
     telefono: "",
     email: "",
     instagram: "",
+    zona: "",
+    accettaMaggioreEta: false,
     accettaTermini: false,
     accettaPrivacy: false,
+    consensoMenzioneInstagram: false,
     accettaMarketing: false,
   })
+  const [honeypot, setHoneypot] = useState("")
 
   const [errors, setErrors] = useState<FormErrors>({})
+  const [erroreInvio, setErroreInvio] = useState<string | null>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
+
+  const haInstagram = formData.instagram.replace(/^@/, "").trim() !== ""
 
   const validate = (): FormErrors => {
     const newErrors: FormErrors = {}
@@ -73,7 +154,7 @@ export function GiveawayForm({ onOpenLegal, onSuccess }: GiveawayFormProps) {
     }
 
     // Telefono
-    const cleanPhone = formData.telefono.replace(/\s+/g, "")
+    const cleanPhone = formData.telefono.replace(/[\s.-]+/g, "")
     const phoneRegex = /^(\+?[0-9]{8,15})$/
     if (!formData.telefono.trim()) {
       newErrors.telefono = "Numero di telefono obbligatorio per la chiamata a fine serata."
@@ -90,70 +171,124 @@ export function GiveawayForm({ onOpenLegal, onSuccess }: GiveawayFormProps) {
     }
 
     // Instagram (opzionale)
-    if (formData.instagram.trim()) {
-      const cleanIg = formData.instagram.replace(/^@/, "").trim()
-      if (cleanIg.length < 2) {
-        newErrors.instagram = "Minimo 2 caratteri."
-      }
+    if (haInstagram && !/^[A-Za-z0-9._]{1,30}$/.test(formData.instagram.replace(/^@/, "").trim())) {
+      newErrors.instagram = "Solo lettere, numeri, punti e trattini bassi (max 30)."
+    }
+
+    // Zona: solo se non arriva dal QR
+    if (!codiceQr && !formData.zona) {
+      newErrors.zona = "Seleziona la tua zona."
     }
 
     // Checkbox obbligatorie
+    if (!formData.accettaMaggioreEta) {
+      newErrors.accettaMaggioreEta = "La partecipazione è riservata ai maggiorenni."
+    }
+
     if (!formData.accettaTermini) {
-      newErrors.accettaTermini = "È necessario accettare il Regolamento della serata."
+      newErrors.accettaTermini = "È necessario accettare il Regolamento."
     }
 
     if (!formData.accettaPrivacy) {
       newErrors.accettaPrivacy = "È necessario confermare la presa visione della Privacy Policy."
     }
 
-    setErrors(newErrors)
     return newErrors
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const focusPrimoErrore = (newErrors: FormErrors) => {
+    const firstKey = FIELD_ORDER.find((key) => newErrors[key])
+    if (!firstKey) return false
+    const found = document.getElementById(fieldIds[firstKey]!)
+    // Base UI Checkbox puts the id on a hidden input; the focusable element is the role="checkbox" root
+    const el =
+      found instanceof HTMLInputElement && found.type === "checkbox"
+        ? (found.parentElement?.querySelector<HTMLElement>('[role="checkbox"]') ?? found)
+        : found
+    if (el) {
+      el.focus({ preventScroll: true })
+      const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches
+      el.scrollIntoView({ block: "center", behavior: reduced ? "auto" : "smooth" })
+    }
+    return true
+  }
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    if (isSubmitting) return
+    setErroreInvio(null)
 
     const newErrors = validate()
-    const firstKey = FIELD_ORDER.find((key) => newErrors[key])
-    if (firstKey) {
-      const found = document.getElementById(fieldIds[firstKey]!)
-      // Base UI Checkbox puts the id on a hidden input; the focusable element is the role="checkbox" root
-      const el =
-        found instanceof HTMLInputElement && found.type === "checkbox"
-          ? (found.parentElement?.querySelector<HTMLElement>('[role="checkbox"]') ?? found)
-          : found
-      if (el) {
-        el.focus({ preventScroll: true })
-        const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches
-        el.scrollIntoView({ block: "center", behavior: reduced ? "auto" : "smooth" })
-      }
-      return
-    }
+    setErrors(newErrors)
+    if (focusPrimoErrore(newErrors)) return
 
     setIsSubmitting(true)
 
-    setTimeout(() => {
-      const registration: RegistrationData = {
+    const instagram = formData.instagram.replace(/^@/, "").trim()
+    const esito = await inviaIscrizione({
+      nome: formData.nome.trim(),
+      cognome: formData.cognome.trim(),
+      telefono: formData.telefono.trim(),
+      email: formData.email.trim().toLowerCase(),
+      instagram: instagram || null,
+      zona_codice: codiceQr,
+      zona: codiceQr ? null : formData.zona || null,
+      accetta_maggiore_eta: formData.accettaMaggioreEta,
+      accetta_regolamento: formData.accettaTermini,
+      accetta_privacy: formData.accettaPrivacy,
+      consenso_menzione_instagram: !!instagram && formData.consensoMenzioneInstagram,
+      accetta_marketing: formData.accettaMarketing,
+      website: honeypot,
+    })
+
+    setIsSubmitting(false)
+
+    if (esito.ok) {
+      onSuccess({
         nome: formData.nome.trim(),
         cognome: formData.cognome.trim(),
         telefono: formData.telefono.trim(),
         email: formData.email.trim().toLowerCase(),
-        instagram: formData.instagram.trim()
-          ? `@${formData.instagram.replace(/^@/, "").trim()}`
-          : undefined,
+        instagram: instagram ? `@${instagram}` : undefined,
         accettaMarketing: formData.accettaMarketing,
-        createdAt: new Date().toLocaleDateString("it-IT", {
+        createdAt: new Date().toLocaleString("it-IT", {
           day: "2-digit",
           month: "2-digit",
           year: "numeric",
           hour: "2-digit",
           minute: "2-digit",
         }),
-      }
+      })
+      return
+    }
 
-      setIsSubmitting(false)
-      onSuccess(registration)
-    }, 900)
+    if (esito.tipo === "validazione") {
+      const serverErrors: FormErrors = {}
+      for (const [campo, msg] of Object.entries(esito.campi)) {
+        const key = CAMPI_SERVER[campo]
+        if (key) serverErrors[key] = msg
+      }
+      if (serverErrors.zona && codiceQr) {
+        // QR non riconosciuto: si chiede la zona a mano
+        setCodiceQr(null)
+        serverErrors.zona = "QR non riconosciuto: seleziona la tua zona."
+      }
+      setErrors(serverErrors)
+      if (!focusPrimoErrore(serverErrors)) setErroreInvio(esito.messaggio)
+      return
+    }
+
+    if (esito.tipo === "duplicato" && esito.campo) {
+      const key = CAMPI_SERVER[esito.campo]
+      if (key) {
+        const dupErrors: FormErrors = { [key]: esito.messaggio }
+        setErrors(dupErrors)
+        focusPrimoErrore(dupErrors)
+        return
+      }
+    }
+
+    setErroreInvio(esito.messaggio)
   }
 
   const handleInputChange = (field: keyof GiveawayFormData, value: string | boolean) => {
@@ -179,6 +314,20 @@ export function GiveawayForm({ onOpenLegal, onSuccess }: GiveawayFormProps) {
 
       <div className="px-5 pt-4 pb-6">
         <form onSubmit={handleSubmit} className="space-y-4.5" noValidate>
+          {/* Honeypot anti-bot: invisibile e fuori dal tab order, gli utenti reali non lo vedono */}
+          <div aria-hidden="true" className="absolute -left-[9999px] h-px w-px overflow-hidden">
+            <label htmlFor={honeypotId}>Lascia vuoto questo campo</label>
+            <input
+              id={honeypotId}
+              type="text"
+              name="sito_web"
+              tabIndex={-1}
+              autoComplete="off"
+              value={honeypot}
+              onChange={(e) => setHoneypot(e.target.value)}
+            />
+          </div>
+
           {/* Nome e Cognome */}
           <div className="grid grid-cols-2 gap-3">
             <div className="space-y-1.5">
@@ -196,6 +345,7 @@ export function GiveawayForm({ onOpenLegal, onSuccess }: GiveawayFormProps) {
                 aria-invalid={!!errors.nome}
                 aria-describedby={errors.nome ? `${nomeId}-error` : undefined}
                 autoComplete="given-name"
+                maxLength={80}
               />
               {errors.nome && (
                 <p id={`${nomeId}-error`} className="text-xs text-destructive mt-0.5">{errors.nome}</p>
@@ -217,6 +367,7 @@ export function GiveawayForm({ onOpenLegal, onSuccess }: GiveawayFormProps) {
                 aria-invalid={!!errors.cognome}
                 aria-describedby={errors.cognome ? `${cognomeId}-error` : undefined}
                 autoComplete="family-name"
+                maxLength={80}
               />
               {errors.cognome && (
                 <p id={`${cognomeId}-error`} className="text-xs text-destructive mt-0.5">{errors.cognome}</p>
@@ -240,9 +391,10 @@ export function GiveawayForm({ onOpenLegal, onSuccess }: GiveawayFormProps) {
               onChange={(e) => handleInputChange("telefono", e.target.value)}
               disabled={isSubmitting}
               className="h-12 text-base md:text-base rounded-none border-border"
-                aria-invalid={!!errors.telefono}
-                aria-describedby={errors.telefono ? `${telefonoId}-error` : undefined}
+              aria-invalid={!!errors.telefono}
+              aria-describedby={errors.telefono ? `${telefonoId}-error` : undefined}
               autoComplete="tel"
+              maxLength={30}
             />
             {errors.telefono && (
               <p id={`${telefonoId}-error`} className="text-xs text-destructive mt-0.5">{errors.telefono}</p>
@@ -262,11 +414,12 @@ export function GiveawayForm({ onOpenLegal, onSuccess }: GiveawayFormProps) {
               onChange={(e) => handleInputChange("email", e.target.value)}
               disabled={isSubmitting}
               className="h-12 text-base md:text-base rounded-none border-border"
-                aria-invalid={!!errors.email}
-                aria-describedby={errors.email ? `${emailId}-error` : undefined}
+              aria-invalid={!!errors.email}
+              aria-describedby={errors.email ? `${emailId}-error` : undefined}
               autoComplete="email"
               autoCapitalize="none"
               spellCheck={false}
+              maxLength={254}
             />
             {errors.email && (
               <p id={`${emailId}-error`} className="text-xs text-destructive mt-0.5">{errors.email}</p>
@@ -295,17 +448,51 @@ export function GiveawayForm({ onOpenLegal, onSuccess }: GiveawayFormProps) {
                 autoCorrect="off"
                 autoComplete="off"
                 spellCheck={false}
+                maxLength={31}
                 aria-invalid={!!errors.instagram}
                 aria-describedby={errors.instagram ? `${instagramId}-error` : undefined}
               />
             </div>
-            <p className="text-xs text-muted-foreground">
-              Per la menzione social e la proclamazione in sala.
-            </p>
             {errors.instagram && (
               <p id={`${instagramId}-error`} className="text-xs text-destructive mt-0.5">{errors.instagram}</p>
             )}
           </div>
+
+          {/* Zona: solo se non arriva dal QR */}
+          {!codiceQr && (
+            <fieldset className="space-y-1.5" aria-describedby={errors.zona ? `${zonaId}-error` : undefined}>
+              <legend className="text-xs uppercase tracking-wider font-semibold text-muted-foreground mb-1.5">
+                La tua zona in sala <span className="text-foreground">*</span>
+              </legend>
+              <div className="grid grid-cols-3 gap-2">
+                {ZONE.map((z) => (
+                  <label
+                    key={z.id}
+                    className="relative flex h-12 items-center justify-center border border-border text-sm cursor-pointer has-[:checked]:bg-foreground has-[:checked]:text-background has-[:checked]:border-foreground has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-ring/50 has-[:disabled]:opacity-50"
+                  >
+                    <input
+                      id={`${zonaId}-${z.id}`}
+                      type="radio"
+                      name="zona"
+                      value={z.id}
+                      checked={formData.zona === z.id}
+                      onChange={() => handleInputChange("zona", z.id as ZonaId)}
+                      disabled={isSubmitting}
+                      aria-invalid={!!errors.zona}
+                      className="sr-only"
+                    />
+                    {z.nome}
+                  </label>
+                ))}
+              </div>
+              <p className="text-xs text-muted-foreground">
+                Serve solo a trovarti in sala se vinci: non cambia le probabilità.
+              </p>
+              {errors.zona && (
+                <p id={`${zonaId}-error`} className="text-xs text-destructive mt-0.5">{errors.zona}</p>
+              )}
+            </fieldset>
+          )}
 
           {/* Consensi */}
           <div className="pt-3.5 border-t border-border/60 space-y-3.5">
@@ -313,81 +500,68 @@ export function GiveawayForm({ onOpenLegal, onSuccess }: GiveawayFormProps) {
               Consensi e Condizioni
             </div>
 
-            {/* Checkbox Termini */}
-            <div className="space-y-1">
-              <div className="flex items-start gap-3">
-                <Checkbox
-                  id={terminiId}
-                  checked={formData.accettaTermini}
-                  aria-invalid={!!errors.accettaTermini}
-                  aria-describedby={errors.accettaTermini ? `${terminiId}-error` : undefined}
-                  onCheckedChange={(checked) => handleInputChange("accettaTermini", checked === true)}
-                  disabled={isSubmitting}
-                  className="mt-1 size-4.5"
-                />
-                <Label htmlFor={terminiId} className="text-xs sm:text-sm leading-relaxed cursor-pointer font-normal text-muted-foreground block">
-                  Dichiaro di essere maggiorenne e accetto il{" "}
-                  <button
-                    type="button"
-                    onClick={() => onOpenLegal("termini")}
-                    className="text-foreground underline underline-offset-2 hover:opacity-75 inline font-medium"
-                  >
-                    Regolamento Estrazione Chef Battle
-                  </button>
-                  . <span className="text-foreground">*</span>
-                </Label>
-              </div>
-              {errors.accettaTermini && (
-                <p id={`${terminiId}-error`} className="text-xs text-destructive pl-7">{errors.accettaTermini}</p>
-              )}
-            </div>
+            <Consenso
+              id={etaId}
+              checked={formData.accettaMaggioreEta}
+              onChange={(c) => handleInputChange("accettaMaggioreEta", c)}
+              disabled={isSubmitting}
+              error={errors.accettaMaggioreEta}
+              required
+            >
+              Dichiaro di avere almeno 18 anni.
+            </Consenso>
 
-            {/* Checkbox Privacy */}
-            <div className="space-y-1">
-              <div className="flex items-start gap-3">
-                <Checkbox
-                  id={privacyId}
-                  checked={formData.accettaPrivacy}
-                  aria-invalid={!!errors.accettaPrivacy}
-                  aria-describedby={errors.accettaPrivacy ? `${privacyId}-error` : undefined}
-                  onCheckedChange={(checked) => handleInputChange("accettaPrivacy", checked === true)}
-                  disabled={isSubmitting}
-                  className="mt-1 size-4.5"
-                />
-                <Label htmlFor={privacyId} className="text-xs sm:text-sm leading-relaxed cursor-pointer font-normal text-muted-foreground block">
-                  Ho letto e compreso l'{" "}
-                  <button
-                    type="button"
-                    onClick={() => onOpenLegal("privacy")}
-                    className="text-foreground underline underline-offset-2 hover:opacity-75 inline font-medium"
-                  >
-                    Informativa sulla Privacy (GDPR)
-                  </button>
-                  . <span className="text-foreground">*</span>
-                </Label>
-              </div>
-              {errors.accettaPrivacy && (
-                <p id={`${privacyId}-error`} className="text-xs text-destructive pl-7">{errors.accettaPrivacy}</p>
-              )}
-            </div>
+            <Consenso
+              id={terminiId}
+              checked={formData.accettaTermini}
+              onChange={(c) => handleInputChange("accettaTermini", c)}
+              disabled={isSubmitting}
+              error={errors.accettaTermini}
+              required
+            >
+              Accetto il{" "}
+              <LinkLegale onClick={() => onOpenLegal("termini")}>Regolamento del concorso</LinkLegale>.
+            </Consenso>
 
-            {/* Checkbox Marketing */}
-            <div className="flex items-start gap-3">
-              <Checkbox
-                id={marketingId}
-                checked={formData.accettaMarketing}
-                onCheckedChange={(checked) => handleInputChange("accettaMarketing", checked === true)}
+            <Consenso
+              id={privacyId}
+              checked={formData.accettaPrivacy}
+              onChange={(c) => handleInputChange("accettaPrivacy", c)}
+              disabled={isSubmitting}
+              error={errors.accettaPrivacy}
+              required
+            >
+              Ho letto l'<LinkLegale onClick={() => onOpenLegal("privacy")}>Informativa sulla Privacy</LinkLegale>.
+            </Consenso>
+
+            {haInstagram && (
+              <Consenso
+                id={menzioneId}
+                checked={formData.consensoMenzioneInstagram}
+                onChange={(c) => handleInputChange("consensoMenzioneInstagram", c)}
                 disabled={isSubmitting}
-                className="mt-1 size-4.5"
-              />
-              <Label htmlFor={marketingId} className="text-xs sm:text-sm leading-relaxed cursor-pointer font-normal text-muted-foreground block">
-                Desidero ricevere inviti e aggiornamenti sui futuri eventi ed esperienze culinarie dello Chef Jacopo Lanfranco (facoltativo).
-              </Label>
-            </div>
+              >
+                Se vinco, acconsento a essere menzionato e taggato nelle storie Instagram ufficiali della serata (facoltativo).
+              </Consenso>
+            )}
+
+            <Consenso
+              id={marketingId}
+              checked={formData.accettaMarketing}
+              onChange={(c) => handleInputChange("accettaMarketing", c)}
+              disabled={isSubmitting}
+            >
+              Desidero ricevere via email, SMS/WhatsApp o telefono inviti e aggiornamenti sui futuri eventi dello Chef Jacopo Lanfranco (facoltativo, revocabile in ogni momento, non incide sull'estrazione).
+            </Consenso>
           </div>
 
           {/* Submit Button */}
           <div className="pt-3">
+            {erroreInvio && (
+              <p role="alert" className="mb-3 border border-destructive/60 p-3 text-sm text-destructive">
+                {erroreInvio}
+              </p>
+            )}
             <Button
               type="submit"
               disabled={isSubmitting}
@@ -402,8 +576,10 @@ export function GiveawayForm({ onOpenLegal, onSuccess }: GiveawayFormProps) {
                 <span>Partecipa all'Estrazione</span>
               )}
             </Button>
-            <p className="text-xs text-center text-muted-foreground mt-2.5 font-mono">
-              Sorteggio al termine della serata • 21 Ottobre 2026
+            <p className="text-xs text-muted-foreground mt-3 leading-relaxed">
+              Titolare del trattamento: {LEGAL_INFO.promotore.ragioneSociale}. I dati servono a gestire
+              l'estrazione e contattare il vincitore.{" "}
+              <LinkLegale onClick={() => onOpenLegal("privacy")}>Informativa completa</LinkLegale>.
             </p>
           </div>
         </form>

@@ -24,17 +24,20 @@ L'estrazione dal vivo del vincitore avverrà al termine della serata.
   - `/immagini/Jacopo.avif`
 
 ## Dati del Modulo
-- **Nome** (obbligatorio)
-- **Cognome** (obbligatorio)
-- **Telefono** (obbligatorio, utilizzato per la chiamata del vincitore a fine serata)
-- **Email** (obbligatorio, per conferma iscrizione e comunicazioni)
-- **Nickname Instagram** (facoltativo, per menzione live in sala)
-- **Consenso Regolamento Concorso** (obbligatorio, consultabile via Sheet drawer)
-- **Consenso Privacy GDPR** (obbligatorio, consultabile via Sheet drawer)
-- **Consenso Eventi Futuri** (facoltativo)
+- **Nome**, **Cognome**, **Telefono** (chiamata del vincitore), **Email** (obbligatori)
+- **Nickname Instagram** (facoltativo) + **Consenso menzione Instagram** (facoltativo, compare solo se c'è il nickname)
+- **Zona** (normale / premium / vip): dal QR `?z=<codice opaco>`, altrimenti scelta nel form. Non incide sull'estrazione.
+- **Dichiarazione maggiore età**, **Accettazione Regolamento**, **Presa visione Privacy** (obbligatori, separati)
+- **Consenso Eventi Futuri** (facoltativo, marketing)
+
+## Back-end e aspetti legali
+- Back-end FastAPI in `../back-end` (repo separato). Il form invia a `POST /api/iscrizioni` (`src/lib/api.ts`, timeout + retry).
+- È un concorso a premio (DPR 430/2001): estrazione unica su tutti gli iscritti, alla presenza di notaio.
+- Dati del promotore e parametri del regolamento in `LEGAL_INFO` (`src/data/legalTexts.ts`): unica fonte per regolamento, privacy, FAQ, footer. `versione` = `INFORMATIVA_VERSIONE` del back-end.
+- La pagina pubblica non usa cookie né storage: non aggiungerne senza aggiornare la cookie policy.
 
 ## Deploy su Railway (Docker)
 - `Dockerfile`: Multi-stage build (Node 22 Alpine per build statico + Nginx Alpine per il serving).
-- `nginx.conf.template`: Supporta la variabile `$PORT` iniettata dinamicamente da Railway tramite `envsubst`.
+- `nginx.conf.template`: `$PORT` da Railway, proxy `/api` e `/admin` verso `$BACKEND_URL` (rete privata, resolver `$NGINX_RESOLVER`) tramite `envsubst`.
 - `.dockerignore`: Esclude `node_modules`, `dist` e file non necessari per build veloci.
 - Routing SPA con fallback a `index.html` e compressione gzip attiva.

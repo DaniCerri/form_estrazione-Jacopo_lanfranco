@@ -13,7 +13,7 @@ export function HowItWorks() {
     {
       num: "03",
       title: "Estrazione a fine serata",
-      desc: "Al termine della Chef Battle viene estratto il vincitore. Tieni il telefono a portata di mano.",
+      desc: "Al termine della Chef Battle il vincitore viene estratto alla presenza di un notaio. Tieni il telefono a portata di mano e resta in sala.",
     },
   ]
 

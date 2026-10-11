@@ -11,4 +11,11 @@ export default defineConfig({
       "@": resolve(import.meta.dirname, "./src"),
     },
   },
+  server: {
+    // In sviluppo il back-end gira su :8000 (uv run uvicorn app.main:app --port 8000)
+    proxy: {
+      "/api": "http://localhost:8000",
+      "/admin": "http://localhost:8000",
+    },
+  },
 })

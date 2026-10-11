@@ -22,6 +22,9 @@ COPY nginx.conf.template /etc/nginx/templates/default.conf.template
 
 # Default port fallback (Railway will inject PORT dynamically)
 ENV PORT=80
+# Back-end sulla rete privata Railway e resolver DNS interno (fd12::10)
+ENV BACKEND_URL=http://back-end.railway.internal:8000
+ENV NGINX_RESOLVER=[fd12::10]
 
 EXPOSE ${PORT}
 

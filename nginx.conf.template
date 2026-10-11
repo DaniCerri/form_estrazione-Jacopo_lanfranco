@@ -1,9 +1,14 @@
 server {
     listen ${PORT};
+    listen [::]:${PORT};
     server_name _;
 
     root /usr/share/nginx/html;
     index index.html;
+
+    # DNS interno Railway: risolve *.railway.internal a runtime (il back-end
+    # può partire dopo nginx senza farlo crashare)
+    resolver ${NGINX_RESOLVER} valid=10s ipv6=on;
 
     # Gzip compression for fast mobile loading
     gzip on;
@@ -12,9 +17,34 @@ server {
     gzip_comp_level 6;
     gzip_types text/plain text/css text/xml application/json application/javascript application/rss+xml application/atom+xml image/svg+xml;
 
+    # Security headers
+    add_header X-Content-Type-Options "nosniff" always;
+    add_header X-Frame-Options "SAMEORIGIN" always;
+    add_header Referrer-Policy "strict-origin-when-cross-origin" always;
+    add_header Strict-Transport-Security "max-age=31536000" always;
+
+    # API e dashboard: proxy verso il back-end sulla rete privata.
+    # Stesso dominio per il browser -> niente CORS né preflight.
+    location ~ ^/(api|admin)(/|$) {
+        set $backend ${BACKEND_URL};
+        proxy_pass $backend;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $http_x_forwarded_proto;
+        proxy_connect_timeout 5s;
+        proxy_read_timeout 30s;
+        client_max_body_size 16k;
+    }
+
     # SPA routing: fallback all non-file routes to index.html
     location / {
         try_files $uri $uri/ /index.html;
+        add_header Cache-Control "no-cache";
+        add_header X-Content-Type-Options "nosniff" always;
+        add_header X-Frame-Options "SAMEORIGIN" always;
+        add_header Referrer-Policy "strict-origin-when-cross-origin" always;
+        add_header Strict-Transport-Security "max-age=31536000" always;
     }
 
     # Cache static build assets
@@ -28,10 +58,4 @@ server {
         expires 30d;
         add_header Cache-Control "public, max-age=2592000";
     }
-
-    # Security headers
-    add_header X-Content-Type-Options "nosniff" always;
-    add_header X-Frame-Options "SAMEORIGIN" always;
-    add_header X-XSS-Protection "1; mode=block" always;
-    add_header Referrer-Policy "strict-origin-when-cross-origin" always;
 }

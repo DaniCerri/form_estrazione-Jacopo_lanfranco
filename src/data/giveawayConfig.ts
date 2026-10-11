@@ -1,3 +1,5 @@
+import { LEGAL_INFO } from "@/data/legalTexts"
+
 export interface Prize {
   id: number
   tier: string
@@ -41,27 +43,32 @@ export const GIVEAWAY_CONFIG = {
     {
       question: "Quando avverrà l'estrazione del vincitore?",
       answer:
-        "L'estrazione avverrà questa sera stessa (21/10/2026) dal vivo al termine dell'evento Chef Battle. Il vincitore sarà proclamato in sala e contattato tempestivamente.",
+        "Questa sera stessa (21/10/2026), dal vivo al termine della Chef Battle, dopo la chiusura delle iscrizioni. L'estrazione è casuale e avviene alla presenza di un notaio o di un funzionario della Camera di Commercio.",
     },
     {
       question: "Chi può partecipare?",
       answer:
-        "Tutti i presenti maggiorenni alla serata Chef Battle del 21/10/2026. È ammessa una sola iscrizione per persona per garantire l'equità del sorteggio.",
+        "Tutti i maggiorenni presenti in sala alla serata Chef Battle del 21/10/2026, esclusi staff, organizzatori, giuria e loro familiari. La partecipazione è gratuita ed è ammessa una sola iscrizione per persona.",
     },
     {
       question: "Come sarò contattato in caso di vincita?",
       answer:
-        "Chiameremo immediatamente il numero di telefono indicato nel modulo e invieremo una notifica via email. Assicurati che il tuo telefono sia acceso e raggiungibile al termine della gara culinaria.",
+        `Il vincitore viene annunciato in sala con nome e iniziale del cognome e chiamato al numero indicato nel modulo. Se non risponde dopo ${LEGAL_INFO.tentativiChiamata} tentativi in ${LEGAL_INFO.minutiChiamata} minuti o non si presenta allo staff entro ${LEGAL_INFO.minutiPresenza} minuti, il premio passa alla prima riserva estratta.`,
+    },
+    {
+      question: "La zona in cui sono seduto conta?",
+      answer:
+        "No. La zona serve solo a trovarti in sala se vinci: l'estrazione avviene tra tutti gli iscritti, con le stesse probabilità per ciascuno.",
     },
     {
       question: "A cosa serve il nickname Instagram?",
       answer:
-        "Il nickname Instagram è del tutto facoltativo. Ci permette di menzionarti durante la proclamazione live dal palco e sulle nostre storie ufficiali.",
+        "È facoltativo. Se lo inserisci e dai il consenso, in caso di vincita potremo menzionarti e taggarti nelle storie Instagram ufficiali della serata.",
     },
     {
       question: "Come viene concordata la cena?",
       answer:
-        "La data e i dettagli della cena per due verranno concordati privatamente tra il vincitore e lo Chef Jacopo Lanfranco in base alle rispettive disponibilità.",
+        "Il vincitore riceve un voucher nominativo. Data e dettagli della cena per due vengono concordati privatamente con lo Chef Jacopo Lanfranco, secondo i tempi indicati nel Regolamento.",
     },
   ] as FaqItem[],
 }

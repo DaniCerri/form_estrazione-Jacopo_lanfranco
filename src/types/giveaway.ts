@@ -1,11 +1,16 @@
+export type ZonaId = "normale" | "premium" | "vip"
+
 export interface GiveawayFormData {
   nome: string
   cognome: string
   telefono: string
   email: string
   instagram: string
+  zona: ZonaId | ""
+  accettaMaggioreEta: boolean
   accettaTermini: boolean
   accettaPrivacy: boolean
+  consensoMenzioneInstagram: boolean
   accettaMarketing: boolean
 }
 

@@ -29,11 +29,6 @@ export function App() {
     scrollToTop()
   }
 
-  const handleReset = () => {
-    setRegistration(null)
-    scrollToTop()
-  }
-
   return (
     <div className="min-h-screen bg-background flex justify-center selection:bg-foreground/20">
       <main className="w-full max-w-md min-h-screen bg-background border-x-0 sm:border-x border-border/40 shadow-2xl flex flex-col px-0 relative">
@@ -41,7 +36,7 @@ export function App() {
 
         <div className="flex-1 w-full flex flex-col">
           {registration ? (
-            <SuccessScreen registration={registration} onReset={handleReset} />
+            <SuccessScreen registration={registration} />
           ) : (
             <>
               <GiveawayForm

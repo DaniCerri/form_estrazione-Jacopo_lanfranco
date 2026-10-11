@@ -1,7 +1,7 @@
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from "@/components/ui/sheet"
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
-import { LEGAL_TEXTS } from "@/data/legalTexts"
+import { LEGAL_INFO, LEGAL_TEXTS } from "@/data/legalTexts"
 import type { LegalDocType } from "@/types/giveaway"
 
 interface LegalSheetsProps {
@@ -68,7 +68,7 @@ export function LegalSheets({
               {currentDoc.title}
             </SheetTitle>
             <SheetDescription className="text-xs text-muted-foreground font-mono mt-0.5">
-              Aggiornato il {currentDoc.lastUpdated}
+              Versione {LEGAL_INFO.versione} · pubblicata il {LEGAL_INFO.dataPubblicazione}
             </SheetDescription>
           </SheetHeader>
 

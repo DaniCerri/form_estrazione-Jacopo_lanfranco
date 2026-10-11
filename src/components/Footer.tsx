@@ -1,5 +1,6 @@
 import type { LegalDocType } from "@/types/giveaway"
 import { GIVEAWAY_CONFIG } from "@/data/giveawayConfig"
+import { LEGAL_INFO } from "@/data/legalTexts"
 
 interface FooterProps {
   onOpenLegal: (doc: LegalDocType) => void
@@ -40,7 +41,11 @@ export function Footer({ onOpenLegal }: FooterProps) {
           © 2026 {GIVEAWAY_CONFIG.eventName} • Chef {GIVEAWAY_CONFIG.chefName}.
         </p>
         <p>
-          Iniziativa promozionale limitata alla serata del {GIVEAWAY_CONFIG.eventDate}. Partecipazione riservata ai maggiori di 18 anni.
+          Concorso a premio promosso da {LEGAL_INFO.promotore.ragioneSociale}, P.IVA {LEGAL_INFO.promotore.piva}, limitato alla serata del {GIVEAWAY_CONFIG.eventDate}. Partecipazione gratuita riservata ai maggiori di 18 anni presenti in sala. Montepremi {LEGAL_INFO.valorePremio} IVA esclusa.{" "}
+          <button type="button" onClick={() => onOpenLegal("termini")} className="underline underline-offset-2 hover:text-foreground">
+            Regolamento completo
+          </button>
+          .
         </p>
       </div>
 

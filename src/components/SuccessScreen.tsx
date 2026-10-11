@@ -1,15 +1,12 @@
-import { ArrowCounterClockwise } from "@phosphor-icons/react"
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
 import type { RegistrationData } from "@/types/giveaway"
 import { GIVEAWAY_CONFIG } from "@/data/giveawayConfig"
 
 interface SuccessScreenProps {
   registration: RegistrationData
-  onReset: () => void
 }
 
-export function SuccessScreen({ registration, onReset }: SuccessScreenProps) {
+export function SuccessScreen({ registration }: SuccessScreenProps) {
   return (
     <div className="w-full px-5 py-6 space-y-6 animate-in fade-in duration-300">
       {/* Editorial Header - Conferma */}
@@ -21,7 +18,7 @@ export function SuccessScreen({ registration, onReset }: SuccessScreenProps) {
         </h2>
 
         <p className="mt-6 max-w-[34ch] text-base leading-relaxed text-foreground/80 font-sans">
-          Il tuo nome è nell'urna per la cena privata con lo Chef {GIVEAWAY_CONFIG.chefName}.
+          La tua iscrizione è registrata per l'estrazione della cena privata con lo Chef {GIVEAWAY_CONFIG.chefName}.
         </p>
       </header>
 
@@ -78,21 +75,10 @@ export function SuccessScreen({ registration, onReset }: SuccessScreenProps) {
           Importante per la Proclamazione:
         </div>
         <p className="text-sm text-muted-foreground leading-relaxed font-sans">
-          Il vincitore della cena con Chef Jacopo Lanfranco sarà chiamato al telefono e annunciato in sala{" "}
+          Il vincitore sarà annunciato in sala e chiamato al telefono{" "}
           <strong className="text-foreground font-semibold">al termine della Chef Battle</strong>.
-          Tieni il telefono acceso e resta presente in sala.
+          Tieni il telefono acceso e resta in sala: se non rispondi o non ti presenti entro pochi minuti, il premio passa alla riserva.
         </p>
-      </div>
-
-      {/* Azione Nuova Iscrizione */}
-      <div className="pt-2">
-        <Button
-          onClick={onReset}
-          className="w-full h-12 text-xs uppercase tracking-[0.18em] font-semibold rounded-none bg-foreground text-background hover:opacity-90 transition-opacity gap-2"
-        >
-          <ArrowCounterClockwise className="size-4" />
-          Iscrivi un'altra persona
-        </Button>
       </div>
     </div>
   )
