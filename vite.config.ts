@@ -57,10 +57,10 @@ export default defineConfig({
     assetsInlineLimit: 0,
   },
   server: {
-    // In sviluppo il back-end gira su :8000 (uv run uvicorn app.main:app --port 8000)
+    // In sviluppo il back-end gira su :8000 (uv run uvicorn app.main:app --port 8000); BACKEND_DEV per cambiarlo
     proxy: {
-      "/api": "http://localhost:8000",
-      "/admin": "http://localhost:8000",
+      "/api": process.env.BACKEND_DEV ?? "http://localhost:8000",
+      "/admin": process.env.BACKEND_DEV ?? "http://localhost:8000",
     },
   },
 })
