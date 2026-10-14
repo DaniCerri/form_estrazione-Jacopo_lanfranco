@@ -6,6 +6,7 @@ export interface GiveawayFormData {
   telefono: string
   email: string
   instagram: string
+  senzaInstagram: boolean
   zona: ZonaId | ""
   accettaMaggioreEta: boolean
   accettaTermini: boolean

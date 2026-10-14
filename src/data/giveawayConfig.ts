@@ -31,12 +31,12 @@ export const GIVEAWAY_CONFIG = {
     subtitle: "Esperienza Gastronomica Privata",
     chef: "Chef Jacopo Lanfranco",
     description:
-      "Un percorso degustazione esclusivo per due persone interamente ideato, curato e preparato dallo chef Jacopo Lanfranco. Una serata intima all'insegna dell'alta cucina contemporanea, della massima attenzione per le materie prime e di un abbinamento vini d'eccezione.",
+      "Una cena privata di quattro portate per due persone, interamente ideata, curata e preparata dallo chef Jacopo Lanfranco, con servizio dedicato. Una serata intima all'insegna dell'alta cucina contemporanea e della massima attenzione per le materie prime. Bevande escluse.",
     imageUrl: "/immagini/Jacopo.avif",
     highlights: [
-      "Percorso degustazione privato per 2 persone",
+      "Cena privata di 4 portate per 2 persone",
       "Menu su misura concordato con lo Chef",
-      "Wine pairing & servizio dedicato",
+      "Servizio dedicato incluso, bevande escluse",
     ],
   } as Prize,
   faqs: [
@@ -63,12 +63,12 @@ export const GIVEAWAY_CONFIG = {
     {
       question: "A cosa serve il nickname Instagram?",
       answer:
-        "È facoltativo. Se lo inserisci e dai il consenso, in caso di vincita potremo menzionarti e taggarti nelle storie Instagram ufficiali della serata.",
+        "Lo Chef vuole conoscere il pubblico della serata e dare un'occhiata ai profili. Se non hai Instagram spunta «Non ho Instagram»: partecipi comunque, con le stesse probabilità. Se dai anche il consenso, in caso di vincita potremo menzionarti e taggarti nelle storie Instagram ufficiali della serata.",
     },
     {
       question: "Come viene concordata la cena?",
       answer:
-        "Il vincitore riceve un voucher nominativo. Data e dettagli della cena per due vengono concordati privatamente con lo Chef Jacopo Lanfranco, secondo i tempi indicati nel Regolamento.",
+        "Il vincitore riceve un voucher nominativo. Data e dettagli della cena per due vengono concordati privatamente con lo Chef Jacopo Lanfranco, secondo i tempi indicati nel Regolamento. Il premio comprende le quattro portate e il servizio; le bevande sono escluse e restano a carico del vincitore.",
     },
   ] as FaqItem[],
 }

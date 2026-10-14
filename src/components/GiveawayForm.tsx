@@ -99,6 +99,7 @@ export function GiveawayForm({ onOpenLegal, onSuccess }: GiveawayFormProps) {
   const telefonoId = useId()
   const emailId = useId()
   const instagramId = useId()
+  const senzaInstagramId = useId()
   const zonaId = useId()
   const etaId = useId()
   const terminiId = useId()
@@ -128,6 +129,7 @@ export function GiveawayForm({ onOpenLegal, onSuccess }: GiveawayFormProps) {
     telefono: "",
     email: "",
     instagram: "",
+    senzaInstagram: false,
     zona: "",
     accettaMaggioreEta: false,
     accettaTermini: false,
@@ -141,7 +143,8 @@ export function GiveawayForm({ onOpenLegal, onSuccess }: GiveawayFormProps) {
   const [erroreInvio, setErroreInvio] = useState<string | null>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
 
-  const haInstagram = formData.instagram.replace(/^@/, "").trim() !== ""
+  const instagram = formData.senzaInstagram ? "" : formData.instagram.replace(/^@/, "").trim()
+  const haInstagram = instagram !== ""
 
   const validate = (): FormErrors => {
     const newErrors: FormErrors = {}
@@ -177,9 +180,13 @@ export function GiveawayForm({ onOpenLegal, onSuccess }: GiveawayFormProps) {
       newErrors.email = "Formato email non valido."
     }
 
-    // Instagram (opzionale)
-    if (haInstagram && !/^[A-Za-z0-9._]{1,30}$/.test(formData.instagram.replace(/^@/, "").trim())) {
-      newErrors.instagram = "Solo lettere, numeri, punti e trattini bassi (max 30)."
+    // Instagram: obbligatorio, salvo chi dichiara di non avere un account
+    if (!formData.senzaInstagram) {
+      if (!haInstagram) {
+        newErrors.instagram = "Inserisci il nickname o spunta «Non ho Instagram»."
+      } else if (!/^[A-Za-z0-9._]{1,30}$/.test(instagram)) {
+        newErrors.instagram = "Solo lettere, numeri, punti e trattini bassi (max 30)."
+      }
     }
 
     // Zona: solo se non arriva dal QR
@@ -228,13 +235,13 @@ export function GiveawayForm({ onOpenLegal, onSuccess }: GiveawayFormProps) {
     // Il corsivo serve solo nella conferma: si scarica mentre parte l'iscrizione
     document.fonts.load('italic 400 1em "Playfair Display Variable"').catch(() => { })
 
-    const instagram = formData.instagram.replace(/^@/, "").trim()
     const esito = await inviaIscrizione({
       nome: formData.nome.trim(),
       cognome: formData.cognome.trim(),
       telefono: formData.telefono.trim(),
       email: formData.email.trim().toLowerCase(),
       instagram: instagram || null,
+      senza_instagram: formData.senzaInstagram,
       zona_codice: codiceQr,
       zona: codiceQr ? null : formData.zona || null,
       accetta_maggiore_eta: formData.accettaMaggioreEta,
@@ -430,11 +437,10 @@ export function GiveawayForm({ onOpenLegal, onSuccess }: GiveawayFormProps) {
             )}
           </div>
 
-          {/* Instagram (Opzionale) */}
+          {/* Instagram (obbligatorio, salvo "Non ho Instagram") */}
           <div className="space-y-1.5">
             <label htmlFor={instagramId} className={LABEL}>
-              Nickname Instagram{" "}
-              <span className="lowercase tracking-normal font-normal">(facoltativo)</span>
+              Nickname Instagram <span className="text-foreground">*</span>
             </label>
             <div className="relative flex items-center">
               <span className="absolute left-3 text-muted-foreground text-base select-none font-mono">
@@ -444,9 +450,9 @@ export function GiveawayForm({ onOpenLegal, onSuccess }: GiveawayFormProps) {
                 id={instagramId}
                 type="text"
                 placeholder="mariorossi"
-                value={formData.instagram.replace(/^@/, "")}
+                value={formData.senzaInstagram ? "" : formData.instagram.replace(/^@/, "")}
                 onInput={(e) => handleInputChange("instagram", e.currentTarget.value)}
-                disabled={isSubmitting}
+                disabled={isSubmitting || formData.senzaInstagram}
                 className={`${INPUT} pl-7 pr-2.5`}
                 autoCapitalize="none"
                 autoCorrect="off"
@@ -460,6 +466,19 @@ export function GiveawayForm({ onOpenLegal, onSuccess }: GiveawayFormProps) {
             {errors.instagram && (
               <p id={`${instagramId}-error`} className="text-xs text-destructive mt-0.5">{errors.instagram}</p>
             )}
+            <div className="pt-1">
+              <Consenso
+                id={senzaInstagramId}
+                checked={formData.senzaInstagram}
+                onChange={(c) => {
+                  handleInputChange("senzaInstagram", c)
+                  setErrors((prev) => ({ ...prev, instagram: undefined }))
+                }}
+                disabled={isSubmitting}
+              >
+                Non ho Instagram
+              </Consenso>
+            </div>
           </div>
 
           {/* Zona: solo se non arriva dal QR */}

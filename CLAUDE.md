@@ -2,7 +2,7 @@
 
 ## Panoramica Progetto
 Web application mobile-first per l'iscrizione all'estrazione a premi esclusiva della serata **Chef Battle del 21 Ottobre 2026**.
-Gli utenti si registrano da smartphone durante la serata per concorrere all'unico premio in palio: **una cena per due persone preparata privatamente dallo Chef Jacopo Lanfranco**.
+Gli utenti si registrano da smartphone durante la serata per concorrere all'unico premio in palio: **una cena privata di 4 portate per due persone preparata dallo Chef Jacopo Lanfranco** (servizio incluso, bevande escluse).
 L'estrazione dal vivo del vincitore avverrà al termine della serata.
 
 ## Gerarchia e Struttura della Pagina (Mobile-First)
@@ -31,7 +31,7 @@ L'estrazione dal vivo del vincitore avverrà al termine della serata.
 
 ## Dati del Modulo
 - **Nome**, **Cognome**, **Telefono** (chiamata del vincitore), **Email** (obbligatori)
-- **Nickname Instagram** (facoltativo) + **Consenso menzione Instagram** (facoltativo, compare solo se c'è il nickname)
+- **Nickname Instagram** (obbligatorio, salvo checkbox «Non ho Instagram» → `senza_instagram`) + **Consenso menzione Instagram** (facoltativo, compare solo se c'è il nickname)
 - **Zona** (normale / premium / vip): dal QR `?z=<codice opaco>`, altrimenti scelta nel form. Non incide sull'estrazione.
 - **Dichiarazione maggiore età**, **Accettazione Regolamento**, **Presa visione Privacy** (obbligatori, separati)
 - **Consenso Eventi Futuri** (facoltativo, marketing)

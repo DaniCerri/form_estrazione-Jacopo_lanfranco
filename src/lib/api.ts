@@ -4,6 +4,7 @@ export interface IscrizionePayload {
   telefono: string
   email: string
   instagram: string | null
+  senza_instagram: boolean
   zona_codice: string | null
   zona: string | null
   accetta_maggiore_eta: boolean

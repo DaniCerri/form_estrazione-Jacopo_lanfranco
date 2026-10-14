@@ -73,7 +73,8 @@ export const LEGAL_TEXTS: Record<"privacy" | "termini" | "cookie", LegalDocument
       {
         title: "4. Modalità di partecipazione",
         content: [
-          "Per partecipare occorre scansionare il QR code presente in sala e compilare il modulo online con nome, cognome, numero di telefono ed email, dichiarando la maggiore età e accettando il presente regolamento.",
+          "Per partecipare occorre scansionare il QR code presente in sala e compilare il modulo online con nome, cognome, numero di telefono, email e nickname Instagram, dichiarando la maggiore età e accettando il presente regolamento.",
+          "Chi non ha un account Instagram lo indica nel modulo e partecipa alle stesse condizioni e con le stesse probabilità di vincita.",
           "La partecipazione è gratuita. Il prezzo di ingresso alla serata non è maggiorato in alcun modo per la partecipazione al concorso.",
           "Ogni persona può iscriversi una sola volta. Le iscrizioni con lo stesso numero di telefono o la stessa email sono considerate duplicate: è valida solo la prima in ordine cronologico.",
           "La zona di posto rilevata dal QR code serve solo a individuare il vincitore in sala e non incide in alcun modo sull'estrazione.",
@@ -83,10 +84,9 @@ export const LEGAL_TEXTS: Record<"privacy" | "termini" | "cookie", LegalDocument
       {
         title: "5. Premio e montepremi",
         content: [
-          `Premio unico: una cena degustazione privata per due persone, ideata e preparata dallo Chef Jacopo Lanfranco, con menu personalizzato e abbinamento vini. Valore indicativo: ${LEGAL_INFO.valorePremio} (IVA esclusa). Montepremi complessivo: ${LEGAL_INFO.valorePremio} (IVA esclusa).`,
+          `Premio unico: una cena privata di quattro portate per due persone, ideata e preparata dallo Chef Jacopo Lanfranco, con menu personalizzato e servizio inclusi. Le bevande non sono comprese nel premio e restano a carico del vincitore. Valore indicativo: ${LEGAL_INFO.valorePremio} (IVA esclusa). Montepremi complessivo: ${LEGAL_INFO.valorePremio} (IVA esclusa).`,
           `Luogo di svolgimento: ${LEGAL_INFO.areaPremio}. Data e dettagli saranno concordati tra il vincitore e lo Chef. La cena deve essere fruita entro ${LEGAL_INFO.giorniFruizione} giorni dall'estrazione.`,
           "Il premio non è convertibile in denaro. Se per cause non imputabili al Promotore il premio non fosse disponibile, sarà sostituito da un premio di natura analoga e di valore pari o superiore.",
-          "Le bevande alcoliche incluse nel premio sono servite solo a persone maggiorenni.",
         ],
       },
       {
@@ -154,7 +154,7 @@ export const LEGAL_TEXTS: Record<"privacy" | "termini" | "cookie", LegalDocument
         title: "2. Dati trattati",
         content: [
           "• Nome, cognome, numero di telefono ed email.",
-          "• Nickname Instagram, se lo inserisci.",
+          "• Nickname Instagram, salvo che tu dichiari di non avere un account.",
           "• Zona di posto in sala, rilevata dal QR code scansionato o scelta da te.",
           "• Dichiarazione di maggiore età e scelte sui consensi, con data e ora dell'iscrizione, indirizzo IP, tipo di browser e versione dei testi accettati, a prova della partecipazione e dei consensi.",
           "• Log tecnici del server (indirizzo IP, data e ora delle richieste), per sicurezza.",
@@ -164,6 +164,7 @@ export const LEGAL_TEXTS: Record<"privacy" | "termini" | "cookie", LegalDocument
         title: "3. Finalità e basi giuridiche",
         content: [
           "• Partecipazione al concorso: iscrizione, estrazione, contatto e proclamazione del vincitore (nome e iniziale del cognome in sala), consegna del premio e verbalizzazione. Base giuridica: esecuzione del regolamento a cui aderisci (art. 6.1.b GDPR) e obblighi di legge in materia di manifestazioni a premio e fiscali (D.P.R. 430/2001, D.P.R. 600/1973; art. 6.1.c GDPR).",
+          "• Conoscenza del pubblico della serata: lo Chef può consultare il profilo Instagram pubblico associato al nickname, senza contattarti né pubblicare nulla. Base giuridica: legittimo interesse del Titolare (art. 6.1.f GDPR).",
           "• Menzione sui social: solo in caso di vincita e solo se hai inserito il nickname e dato il consenso specifico, menzione o tag nelle storie Instagram ufficiali. Base giuridica: consenso (art. 6.1.a GDPR).",
           "• Comunicazioni sui futuri eventi: solo se dai il consenso facoltativo, invio tramite email, SMS/WhatsApp e telefono di inviti e aggiornamenti su eventi ed esperienze dello Chef Jacopo Lanfranco. Base giuridica: consenso (art. 6.1.a GDPR e art. 130 D.Lgs. 196/2003).",
           "• Sicurezza della piattaforma e prevenzione di abusi o iscrizioni multiple. Base giuridica: legittimo interesse del Titolare (art. 6.1.f GDPR).",
@@ -173,7 +174,8 @@ export const LEGAL_TEXTS: Record<"privacy" | "termini" | "cookie", LegalDocument
         title: "4. Natura del conferimento",
         content: [
           "Nome, cognome, telefono, email e dichiarazione di maggiore età sono necessari per partecipare: senza questi dati non è possibile iscriversi.",
-          "Il nickname Instagram, il consenso alla menzione social e il consenso alle comunicazioni sui futuri eventi sono facoltativi e non influiscono sulla partecipazione o sulla possibilità di vincere.",
+          "Il nickname Instagram è richiesto a chi ha un account; chi non ce l'ha lo indica nel modulo e partecipa comunque, con le stesse probabilità di vincita.",
+          "Il consenso alla menzione social e il consenso alle comunicazioni sui futuri eventi sono facoltativi e non influiscono sulla partecipazione o sulla possibilità di vincere.",
         ],
       },
       {
