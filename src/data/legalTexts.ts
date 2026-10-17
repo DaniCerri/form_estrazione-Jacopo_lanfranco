@@ -93,7 +93,7 @@ export const LEGAL_TEXTS: Record<"privacy" | "termini" | "cookie", LegalDocument
         title: "6. Estrazione",
         content: [
           `Al termine della serata, chiuse le iscrizioni, si procede a un'unica estrazione tra tutti gli iscritti validi di 1 vincitore e ${LEGAL_INFO.riserve} riserve, in ordine di estrazione.`,
-          "L'estrazione avviene tramite software di estrazione casuale, corredato da perizia tecnica sulla casualità e non manomissibilità, alla presenza di un notaio o di un funzionario della Camera di Commercio, che ne redige il verbale.",
+          "L'estrazione avviene tramite software di estrazione casuale, corredato da perizia tecnica sulla casualità e non manomissibilità.",
         ],
       },
       {
@@ -111,26 +111,13 @@ export const LEGAL_TEXTS: Record<"privacy" | "termini" | "cookie", LegalDocument
         ],
       },
       {
-        title: "9. Premi non assegnati",
-        content: [
-          `Il premio non assegnato o non richiesto, diverso da quello rifiutato, sarà devoluto alla ONLUS ${LEGAL_INFO.onlus}, ai sensi dell'art. 10, comma 5, del D.P.R. 430/2001.`,
-        ],
-      },
-      {
-        title: "10. Cauzione e adempimenti fiscali",
-        content: [
-          "A garanzia del premio il Promotore ha prestato cauzione a favore del Ministero delle Imprese e del Made in Italy, pari al 100% del montepremi, ai sensi dell'art. 7 del D.P.R. 430/2001.",
-          "Il Promotore rinuncia alla facoltà di rivalsa della ritenuta alla fonte prevista dall'art. 30 del D.P.R. 600/1973.",
-        ],
-      },
-      {
-        title: "11. Pubblicità e reperibilità del regolamento",
+        title: "9. Pubblicità e reperibilità del regolamento",
         content: [
           "Il concorso è pubblicizzato con materiali e QR code esposti in sala e su questa pagina. Il regolamento completo è consultabile su questa pagina e presso la sede del Promotore.",
         ],
       },
       {
-        title: "12. Dati personali",
+        title: "10. Dati personali",
         content: [
           "I dati dei partecipanti sono trattati secondo l'Informativa Privacy consultabile su questa pagina.",
         ],
