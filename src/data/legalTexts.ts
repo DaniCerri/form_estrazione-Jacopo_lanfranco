@@ -170,7 +170,6 @@ export const LEGAL_TEXTS: Record<"privacy" | "termini" | "cookie", LegalDocument
         content: [
           `• ${LEGAL_INFO.responsabileTecnico}, Responsabile del trattamento per la gestione tecnica.`,
           "• Railway Corp. (USA), fornitore dell'infrastruttura di hosting, sub-responsabile del trattamento.",
-          "• Il notaio o funzionario camerale che verbalizza l'estrazione e il Ministero delle Imprese e del Made in Italy, per gli adempimenti del concorso.",
           "• Consulenti fiscali e legali del Titolare, se necessario.",
           "• Lo Chef Jacopo Lanfranco, solo per i partecipanti che hanno dato il consenso alle comunicazioni sui futuri eventi e solo per questa finalità.",
           "I dati non sono diffusi, salvo la proclamazione del vincitore in sala e l'eventuale menzione social autorizzata.",
