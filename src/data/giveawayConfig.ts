@@ -31,10 +31,10 @@ export const GIVEAWAY_CONFIG = {
     subtitle: "Esperienza Gastronomica Privata",
     chef: "Chef Jacopo Lanfranco",
     description:
-      "Una cena privata di quattro portate per due persone, interamente ideata, curata e preparata dallo chef Jacopo Lanfranco, con servizio dedicato. Una serata intima all'insegna dell'alta cucina contemporanea e della massima attenzione per le materie prime. Bevande escluse.",
+      "Una cena privata di quattro portate (antipasto, primo, secondo e dolce) per due persone, interamente ideata, curata e preparata dallo chef Jacopo Lanfranco, con servizio dedicato. Una serata intima all'insegna dell'alta cucina contemporanea e della massima attenzione per le materie prime. Bevande escluse.",
     imageUrl: "/immagini/Jacopo.avif",
     highlights: [
-      "Cena privata di 4 portate per 2 persone",
+      "Cena privata di 4 portate (antipasto, primo, secondo e dolce) per 2 persone",
       "Menu su misura concordato con lo Chef",
       "Servizio dedicato incluso, bevande escluse",
     ],
@@ -68,7 +68,7 @@ export const GIVEAWAY_CONFIG = {
     {
       question: "Come viene concordata la cena?",
       answer:
-        "Il vincitore riceve un voucher nominativo. Data e dettagli della cena per due vengono concordati privatamente con lo Chef Jacopo Lanfranco, secondo i tempi indicati nel Regolamento. Il premio comprende le quattro portate e il servizio; le bevande sono escluse e restano a carico del vincitore.",
+        "Il vincitore riceve un voucher nominativo. Data e dettagli della cena per due vengono concordati privatamente con lo Chef Jacopo Lanfranco, secondo i tempi indicati nel Regolamento. Il premio comprende le quattro portate (antipasto, primo, secondo e dolce) e il servizio; le bevande sono escluse e restano a carico del vincitore.",
     },
   ] as FaqItem[],
 }

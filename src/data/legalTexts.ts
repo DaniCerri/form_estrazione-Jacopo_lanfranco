@@ -84,7 +84,7 @@ export const LEGAL_TEXTS: Record<"privacy" | "termini" | "cookie", LegalDocument
       {
         title: "5. Premio e montepremi",
         content: [
-          `Premio unico: una cena privata di quattro portate per due persone, ideata e preparata dallo Chef Jacopo Lanfranco, con menu personalizzato e servizio inclusi. Le bevande non sono comprese nel premio e restano a carico del vincitore. Valore indicativo: ${LEGAL_INFO.valorePremio} (IVA esclusa). Montepremi complessivo: ${LEGAL_INFO.valorePremio} (IVA esclusa).`,
+          `Premio unico: una cena privata di quattro portate (antipasto, primo, secondo e dolce) per due persone, ideata e preparata dallo Chef Jacopo Lanfranco, con menu personalizzato e servizio inclusi. Le bevande non sono comprese nel premio e restano a carico del vincitore. Valore indicativo: ${LEGAL_INFO.valorePremio} (IVA esclusa). Montepremi complessivo: ${LEGAL_INFO.valorePremio} (IVA esclusa).`,
           `Luogo di svolgimento: ${LEGAL_INFO.areaPremio}. Data e dettagli saranno concordati tra il vincitore e lo Chef. La cena deve essere fruita entro ${LEGAL_INFO.giorniFruizione} giorni dall'estrazione.`,
           "Il premio non è convertibile in denaro. Se per cause non imputabili al Promotore il premio non fosse disponibile, sarà sostituito da un premio di natura analoga e di valore pari o superiore.",
         ],
