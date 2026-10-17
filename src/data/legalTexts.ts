@@ -31,7 +31,7 @@ export const LEGAL_INFO = {
   orarioApertura: "[HH:MM]",
   orarioChiusura: "[HH:MM]",
   // Valore normale del premio IVA esclusa (art. 7: la cauzione è pari a questo importo)
-  valorePremio: "200,00 €",
+  valorePremio: "500,00 €",
   areaPremio: "[LUOGO DI SVOLGIMENTO DELLA CENA, es. domicilio del vincitore in provincia di ...]",
   onlus: "[DENOMINAZIONE ONLUS, SEDE, C.F.]",
   riserve: 3,
